@@ -20,6 +20,9 @@ The main topic covered is developing applications using `teal` framework:
 
 - basic proficiency in R programming language
 - basic proficiency in Shiny
+- basic understanding of clinical trial data structures (CDISC/ADaM)
+- familiarity with data visualization principles
+- basic knowledge of reproducible research concepts
 
 ## Sources of knowledge
 
@@ -32,3 +35,4 @@ The main topic covered is developing applications using `teal` framework:
 
 - every behaviour description is accompanied with a code sample (preferably from `shinylive`, so the trainee can explore on their own)
 - complex topics (`teal` behaviours) are presented not only in text, but also visually using a graph or a plot
+- each section has a learning objective

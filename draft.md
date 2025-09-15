@@ -2,8 +2,9 @@
 
 ## 1. Foreward
 
-- what is this training about?
-- a short description of the teal framework and its goals: exploratory data analysis
+- What is this training about?
+- A short description of the teal framework and its role in pharmaceutical and clinical research: exploratory data analysis and a foundation for reproducibility
+- How `teal` fits with `shiny`
 
 ## 2. Prerequisites:
 
@@ -11,14 +12,18 @@
 
 ## 3. Launching `teal` applications.
 
-- The simplest `teal` application to launch (`shinylive` example)
+- The simplest `teal` application to launch (`shinylive` example).
+  `teal::init` with empty modules list.
 - `teal` application with a dummy module (`shinylive` example):
   - where the modules are shown in the UI
-  - where is the filter panel
+  - where is the filter panel.
 - `teal::init` and its parts (complex topic):
   - the data argument
-  - the modules argument
-  - additional modifiers for a `teal` application: adding footer, title, etc...
+  - the modules argument.
+- Additional modifiers for a `teal` application: adding footer, header, etc...
+- Troubleshooting common launch issues.
+
+Learning objective: can launch and configure basic `teal` applications.
 
 ## 4. Understanding data in `teal`.
 
@@ -30,11 +35,20 @@
   - printing `join_keys` and seeing how the output
     matches what `join_keys` are supposed to do
   - how to pass `join_keys` to `teal.data`
+  - recreating `join_keys` for a CDISC example
+    (ADSL-ADAE)
 - data preprocessing:
+  - best practices
   - where should it happen - in separate functions or files
   - encapsulating data preprocessing in `teal.data`
 - data flow in `teal` applications - from user's `teal.data`,
   through the filter panel, to the modules
+- handling large datasets - performance considerations
+
+Learning objectives: 
+* understands `teal` data management and relationships
+* can create their own `teal.data` objects with custom `join_keys`
+  for CDISC data relationships
 
 ## 5. Understanding how to launch modules from `teal.modules.general` and `teal.modules.clinical`.
 
@@ -45,6 +59,11 @@
   - the filtering role of `filter_spec`
   - `data_extract_spec` dictates how `teal.modules.general` modules
     process data (`shinylive` example)
+
+Learning objectives:
+* can implement a `teal` application using pre-built modules
+* can configure pre-built modules from `teal.modules.general`
+  and `teal.modules.clinical`
 
 ## 6. Filter panel.
 
@@ -58,6 +77,12 @@
   - hierarchical nature - filtering on a parent dataset filters out
     the child datasets as well
 
+Learning objectives:
+* understands the relationship between the filter panel and data
+  passed to modules
+* can save and restore filtering states
+* can launch a `teal` application with a custom filtering state
+
 ## 7. Report functionality.
 
 - The structure of the UI:
@@ -65,7 +90,12 @@
   - Previewing the report
   - Basic report edits: rearrange report cards
 - Saving the report
+- Investigating a saved `teal` report
 - Importing the report
+
+Learning objectives:
+* Understands the role of the report in a `teal` application
+* Can save and import a report
 
 ## 8. Bookmarking.
 
@@ -73,6 +103,9 @@
 - Bookmarking the state of the application:
   - What is bookmarked exactly
 - Using the bookmark
+
+Learning objectives:
+* Understands what is bookmarked in a `teal` application
 
 ## 9. Creating custom `teal` modules.
 
@@ -84,3 +117,8 @@
   - Support for `teal` reporting
   - Support for the reproducibility using `teal.data`
     and show R code
+- `qenv` objects as tools or reproducibility
+
+Learning objectives:
+* Can implement a basic custom `teal` module that integrates
+  `teal.data` and `teal.code` objects for reproducibility
