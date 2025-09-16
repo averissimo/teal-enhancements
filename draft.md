@@ -3,7 +3,8 @@
 ## 1. Foreward
 
 - What is this training about?
-- A short description of the teal framework and its role in pharmaceutical and clinical research: exploratory data analysis and a foundation for reproducibility
+- A short description of the teal framework and its role in pharmaceutical and
+  clinical research: exploratory data analysis and a foundation for reproducibility
 - How `teal` fits with `shiny`
 
 ## 2. Prerequisites:
@@ -13,7 +14,7 @@
 ## 3. Launching `teal` applications.
 
 - The simplest `teal` application to launch (`shinylive` example).
-  `teal::init` with empty modules list.
+  `teal::init` with one empty module.
 - `teal` application with a dummy module (`shinylive` example):
   - where the modules are shown in the UI
   - where is the filter panel.
@@ -45,9 +46,10 @@ Learning objective: can launch and configure basic `teal` applications.
   through the filter panel, to the modules
 - handling large datasets - performance considerations
 
-Learning objectives: 
-* understands `teal` data management and relationships
-* can create their own `teal.data` objects with custom `join_keys`
+Learning objectives:
+
+- understands `teal` data management and relationships
+- can create their own `teal.data` objects with custom `join_keys`
   for CDISC data relationships
 
 ## 5. Understanding how to launch modules from `teal.modules.general` and `teal.modules.clinical`.
@@ -61,8 +63,9 @@ Learning objectives:
     process data (`shinylive` example)
 
 Learning objectives:
-* can implement a `teal` application using pre-built modules
-* can configure pre-built modules from `teal.modules.general`
+
+- can implement a `teal` application using pre-built modules
+- can configure pre-built modules from `teal.modules.general`
   and `teal.modules.clinical`
 
 ## 6. Filter panel.
@@ -78,10 +81,11 @@ Learning objectives:
     the child datasets as well
 
 Learning objectives:
-* understands the relationship between the filter panel and data
+
+- understands the relationship between the filter panel and data
   passed to modules
-* can save and restore filtering states
-* can launch a `teal` application with a custom filtering state
+- can save and restore filtering states
+- can launch a `teal` application with a custom filtering state
 
 ## 7. Report functionality.
 
@@ -94,8 +98,9 @@ Learning objectives:
 - Importing the report
 
 Learning objectives:
-* Understands the role of the report in a `teal` application
-* Can save and import a report
+
+- Understands the role of the report in a `teal` application
+- Can save and import a report
 
 ## 8. Bookmarking.
 
@@ -105,7 +110,8 @@ Learning objectives:
 - Using the bookmark
 
 Learning objectives:
-* Understands what is bookmarked in a `teal` application
+
+- Understands what is bookmarked in a `teal` application
 
 ## 9. Creating custom `teal` modules.
 
@@ -120,5 +126,7 @@ Learning objectives:
 - `qenv` objects as tools or reproducibility
 
 Learning objectives:
-* Can implement a basic custom `teal` module that integrates
+
+- Can implement a basic custom `teal` module that integrates
   `teal.data` and `teal.code` objects for reproducibility
+
