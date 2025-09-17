@@ -1,0 +1,9 @@
+project:
+  title: "Interactive Data Visualisation Using the Teal Framework"
+  output-dir: docs
+  type: website
+  render:
+    - "*.qmd"
+
+editor: visual
+
