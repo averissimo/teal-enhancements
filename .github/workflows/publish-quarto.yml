@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main  # changes pushed to this branch will trigger a build.
+      - kp
 
 jobs:
   build-deploy:
