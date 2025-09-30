@@ -4,6 +4,12 @@ project:
   type: website
   render:
     - "*.qmd"
+    - "README.md"
 
-editor: visual
+website:
+  title: "Interactive Data Visualisation Using the Teal Framework"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
 
