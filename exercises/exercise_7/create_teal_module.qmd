@@ -1,0 +1,328 @@
+---
+engine: knitr
+format:
+  html:
+    toc: true
+  # live-revealjs:
+  #   smaller: true
+  #   scrollable: true
+  #   include-in-header:
+  #     text: |
+  #       <style>
+  #       .reveal .slides section.fs-50 { font-size: .5em; }
+  #       .reveal .slides section.fs-60 { font-size: .6em; }
+  #       </style>
+filters:
+  - shinylive
+webr:
+  packages:
+    - teal
+    - dplyr
+    - tidyr
+    - ggplot2
+---
+
+## How to create a teal module?
+
+A teal module consists of two main components, similar to a Shiny module:
+
+1. **UI function** - defines the user interface
+2. **Server function** - contains the server logic
+
+The key difference from a standard Shiny module is that the **server function now has a `data` parameter**:
+
+- This parameter is **reactive** and contains a `teal_data` object
+- The `teal_data` object holds all the datasets available in the teal application
+- Access datasets using `data()[["dataset_name"]]`
+
+## Basic structure of a `teal_module`
+
+```{.r code-line-numbers="1-4,6-11,13-18"}
+my_module_ui <- function(id) {
+  ns <- NS(id)
+  # Define UI elements with proper namespacing
+}
+
+my_module_srv <- function(id, data) {
+  moduleServer(id, function(input, output, session) {
+    # data parameter contains reactive teal_data object
+    # Access datasets: data()[["ADSL"]], data()[["ADAE"]], etc.
+  })
+}
+
+# Create the module from UI and server functions
+my_module <- teal::module(
+  label = "Module Label",
+  ui = my_module_ui,
+  server = my_module_srv
+)
+```
+
+## Base functionality of our custom module {.fs-50}
+
+Let's create a custom module that shows a **simple histogram plot** based on user selected columns.
+
+- **UI function** should contain (wrapped in `shiny::tags$div()`):
+  1. A variable selector (using `shiny::selectInput()`)
+  1. A plot output (using `shiny::plotOutput()`)
+- **Server** should:
+  1. Update the variable selector choices based on numeric columns from the `ADSL` dataset
+      - Using `shiny::updateSelectInput()` to set choices of `data()[["ADSL"]]` numeric columns
+      - Helper snippet: `data()[["ADSL"]] |> dplyr::select(where(is.numeric)) |> names()`
+  2. Create a histogram plot using `ggplot2` based on the selected variable (Using `ggplot2::geom_histogram()`)
+      - Helper snippet: `ggplot(ADSL, aes(x = selected_variable)) + geom_histogram()`
+
+ℹ️ Good to know:
+
+- Use `teal.code::within()` to create reproducible code inside reactive expression and return it at the end.
+- `teal_data` code is not aware of shiny inputs
+  - Use named parameters in `within()` to pass shiny inputs
+
+
+## Initial teal module code {.fs-50}
+
+> See folder `exercice_7` for the code to start with
+
+```{.r}
+library(teal)
+library(dplyr)
+library(ggplot2)
+
+my_custom_module_ui <- function(id) {
+  ns <- NS(id)
+  tags$div(
+    selectInput( # variable selector
+      inputId = ns("variable"),
+      label = "Select variable",
+      choices = NULL # initialize empty - to be updated from within server
+    ),
+    plotOutput(ns("plot")) # Output for the plot
+  )
+}
+
+my_custom_module_srv <- function(id, data) {
+  moduleServer(id, function(input, output, session) {
+
+    updateSelectInput( # update variable selector by names of data
+      inputId = "variable",
+      choices = data()[["ADSL"]] |> select(where(is.numeric)) |> names()
+    )
+
+    # add plot call to qenv
+    result <- reactive({
+      req(input$variable)
+      within(
+        data(),
+        {
+          plot <- ggplot(ADSL, aes(x = input_var)) + geom_histogram()
+        },
+        input_var = as.name(input$variable) # Pass the selected variable as a symbol
+      )
+    })
+
+    # render to output the object from qenv
+    output$plot <- renderPlot(result()[["plot"]])
+
+    result
+  })
+}
+
+my_custom_module <- module(
+  label = "My Custom Module",
+  ui = my_custom_module_ui,
+  server = my_custom_module_srv
+)
+
+data <- teal_data()
+data <- within(data, {
+  ADSL <- rADSL
+})
+
+app <- init(
+  data = data,
+  modules = list(my_custom_module)
+)
+
+shinyApp(app$ui, app$server)
+```
+
+## App running
+
+<video width="100%" controls autoplay loop muted>
+  <source src="app_example.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
+
+## 🛠️ Exercise
+
+Let's enhance the module:
+
+-   Let's create a new parameter `binwidth`:
+
+    ![](input_slider.png)
+
+    -   add a new widget to the UI
+        -   that widget should be created with `shiny::sliderInput()`
+        -   make reasonable values of `min`, `max`, `step` and initial `value`
+
+    -   read and use that widget in server
+        -   pass this parameter value as `binwidth` argument to the `geom_histogram()` function
+
+    ::: {.callout-tip collapse="true"}
+    ## Answer
+
+    ```{.r code-line-numbers="1-9"}
+    my_custom_module_ui <- function(id) {
+      # ... existing code ...
+      tags$div(
+        # ... existing code ...,
+        sliderInput(
+          inputId = ns("binwidth"),
+          label = "binwidth",
+          min = 1,
+          max = 10,
+          step = 1,
+          value = 3
+        ),
+        # ... existing code ...
+      )
+    }
+    ```
+
+    ```{r, eval = FALSE}
+    my_custom_module_srv <- function(id, data) {
+      moduleServer(id, function(input, output, session) {
+
+        # ... existing code ...
+
+        # add plot call to qenv
+        result <- reactive({
+          req(input$variable)
+          within(
+            data(),
+            {
+              plot <- ggplot(ADSL, aes(x = input_var)) +
+                geom_histogram(binwidth = input_binwidth)
+              plot
+            },
+            input_var = as.name(input$variable),
+            input_binwidth = input$binwidth
+          )
+        })
+
+        # ... existing code ...
+
+      })
+    }
+    ```
+    :::
+
+-   Let's add more datasets
+
+    -   extend `data` with `ADAE = teal.data::rADAE`
+    -   add a new widget in the UI
+        -   that widget should be created with `shiny::selectInput()`
+        -   initialize empty and update values in the same way as for `input$variable`
+    -   read and use in the server
+        -   modify the variable selection - it has to be chosen from the currently selected dataset
+            -   convert to `observeEvent()` on `input$dataset`
+            -   add at the beggining: `req(input$dataset)` to assure non empty selection
+            -   modify to `choices = names(data()[[input$dataset]])`
+        -   modify the observer call
+            -   add `req(input$dataset)`
+            -   add `req(input$variables %in% names(data()[[input$dataset]]))`
+        -   modify ggplot call
+            -   convert the value to a symbol and use as a first argument of `ggplot()`
+
+    ::: {.callout-tip collapse="true"}
+    ## Answer
+
+    ```{r, eval = FALSE}
+    data <- within(data, {
+      ADSL <- rADSL
+      ADAE <- teal.data::rADAE
+    })
+    ```
+
+    ```{r, eval = FALSE}
+    my_custom_module_ui <- function(id) {
+      ns <- NS(id)
+      tags$div(
+        # dataset selector
+        selectInput(
+          inputId = ns("dataset"),
+          label = "Select dataset",
+          choices = NULL
+        ),
+        # ... existing code ...
+      )
+    }
+    ```
+
+    ```{r, eval = FALSE}
+    my_custom_module_srv <- function(id, data) {
+      moduleServer(id, function(input, output, session) {
+
+        # ... existing code ...
+
+        updateSelectInput(
+          inputId = "dataset",
+          choices = names(data())
+        )
+
+        observeEvent(
+          input$dataset,
+          {
+            req(input$dataset)
+            updateSelectInput(
+              inputId = "variable",
+              choices = data()[[input$dataset]] |> select(where(is.numeric)) |> names()
+            )
+          }
+        )
+
+        # Update reactive and render function
+        result <- reactive({
+          req(input$dataset)
+          req(input$variable)
+          within(
+            data(),
+            {
+              my_plot <- ggplot(input_dataset, aes(x = input_var)) +
+                geom_histogram()
+              my_plot
+            },
+            input_dataset = as.name(input$dataset),
+            input_var = as.name(input$variable)
+          )
+        })
+
+        output$plot <- renderPlot({
+          result()[["my_plot"]]
+        })
+
+      })
+    }
+    ```
+    :::
+
+<!--
+
+### 🛠️ Exercise (bonus)
+
+-   Convert module to a function and let `label` be a function parameter.
+
+-->
+
+## 📚 What did we learn?
+
+- How to create a custom teal module
+- How to interact with `teal_data` object in the module server
+- How to enable reproducible code and reporting features
+
+## 🌐 References
+
+-   [`teal::module()`](https://insightsengineering.github.io/teal/latest-tag/reference/teal_modules.html)
+-   ["Creating Custom Modules"](https://insightsengineering.github.io/teal/latest-tag/articles/creating-custom-modules.html) vignette
+-   [`"qenv"`](https://insightsengineering.github.io/teal.code/latest-tag/articles/qenv.html) article on how to interact with internal `qenv` object - in particular: [`teal.code::within()`](https://insightsengineering.github.io/teal.code/latest-tag/reference/qenv.html) function
