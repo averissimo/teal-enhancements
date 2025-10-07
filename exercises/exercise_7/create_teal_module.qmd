@@ -12,8 +12,6 @@ format:
   #       .reveal .slides section.fs-50 { font-size: .5em; }
   #       .reveal .slides section.fs-60 { font-size: .6em; }
   #       </style>
-filters:
-  - shinylive
 webr:
   packages:
     - teal
