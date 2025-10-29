@@ -26,6 +26,13 @@ If time allows, we will host a mini-hackathon, where attendees can actively cont
 
 This interactive experience promises to foster learning and collaboration while advancing skills in data visualisation.
 
+## Requirements for the workshop
+
+- A laptop with a modern web browser installed
+- Familiarity with R and Shiny, including:
+  - Reactivity concepts - see [Basic Reactivity](https://mastering-shiny.org/basic-reactivity.html) and [An Overview](https://shiny.posit.co/r/articles/build/reactivity-overview/)
+  - Using modules in Shiny apps - see [Modularizing Shiny app code](https://shiny.posit.co/r/articles/improve/modules/) and [Shiny Modules](https://mastering-shiny.org/scaling-modules.html?q=modules#scaling-modules)
+
 ## 📋 Agenda
 
 ### _Topic 1:_ Introduction to teal _(15 minutes)_
