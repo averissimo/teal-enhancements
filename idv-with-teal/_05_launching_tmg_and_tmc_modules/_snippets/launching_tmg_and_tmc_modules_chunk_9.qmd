@@ -1,0 +1,23 @@
+# Advanced select_spec options
+select_spec(
+  choices = variable_choices("ADSL", c("AGE", "BMIBL")),
+  selected = "AGE",
+  multiple = TRUE,          # Allow multiple variable selection
+  fixed = TRUE,            # Prevent user from changing selection
+  always_selected = "AGE"  # Keep AGE always selected
+)
+
+# Advanced filter_spec options
+filter_spec(
+  vars = c("ARM", "SEX"),           # Multiple filter variables
+  choices = list(
+    ARM = c("Placebo", "Treatment"),
+    SEX = c("M", "F")
+  ),
+  selected = list(
+    ARM = "Placebo",
+    SEX = c("M", "F")
+  ),
+  multiple = TRUE,
+  label = "Population Filters"
+)

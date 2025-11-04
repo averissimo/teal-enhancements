@@ -1,0 +1,3 @@
+# Convert logical/character variables to factors for filtering
+data_with_factors <- iris
+data_with_factors$Species <- as.factor(data_with_factors$Species)

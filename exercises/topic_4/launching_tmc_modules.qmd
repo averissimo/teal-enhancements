@@ -1,0 +1,66 @@
+## Topic 4: Introduction to `teal.modules.clinical` and anatomy of a module (15 minutes)
+
+### What is `teal.modules.clinical`?
+
+The `teal.modules.clinical` (TMC) package offers specialized modules designed specifically for clinical trial data analysis. These modules are built on top of `teal.modules.general` and provide clinical-specific functionality and workflows.
+
+### Launching a simple `teal.modules.clinical` application
+
+Here's a simple example using a `teal.modules.clinical` module:
+
+```{r}
+library(teal)
+library(teal.modules.clinical)
+library(teal.data)
+library(pharmaverseadam)
+
+# Step 1: Load real ADaM data from pharmaverseadam
+data("adsl", package = "pharmaverseadam")
+
+# Step 2: Create teal_data object with the real dataset
+clinical_data <- cdisc_data(
+    ADSL = adsl
+    code = "ADSL <- adsl"
+)
+
+# Step 3: Create the teal application with a TMC module
+app <- teal::init(
+  data = clinical_data,
+  modules = teal::modules(
+    tm_t_summary(
+      label = "Summary Statistics",
+      dataname = "ADSL"
+    )
+  )
+)
+
+# Step 4: Launch the application
+if (interactive()) {
+  shiny::shinyApp(app$ui, app$server)
+}
+```
+
+### Anatomy of a `teal.modules.clinical` module
+
+When you launch a `teal.modules.clinical` application, you'll observe:
+
+1. **Filter Panel (Left)**: Shows filtering options for all dataset variables
+   - **Categorical variables**: Display as checkboxes (e.g., SEX, ARM, RACE)
+   - **Numeric variables**: Display as range sliders (e.g., AGE, BMIBL)
+   - **Date variables**: Display as date pickers (e.g., RFSTDTC, RFENDTC)
+   - All filters are interconnected with module outputs
+
+2. **Main Output (Center)**: Displays the module's primary analytical output
+   - Module-specific visualizations or tables
+   - Interactive elements for exploration
+   - Professional appearance following clinical data standards
+
+3. **Encoding Panel**: Provides controls for configuring the analysis
+   - Variable selection dropdowns
+   - Analysis parameter settings
+   - Customization options specific to the module type
+
+4. **Show R Code Button**: Generates reproducible R code for all operations
+   - Click to view the exact R code used
+   - Copy code for reproducibility
+   - Ensures transparency in analysis

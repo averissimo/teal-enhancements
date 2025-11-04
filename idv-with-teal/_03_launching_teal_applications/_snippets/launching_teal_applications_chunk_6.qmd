@@ -1,0 +1,40 @@
+library(teal.modules.general)
+
+app <- teal::init(
+  data = teal.data::teal_data(IRIS = iris, MTCARS = mtcars, code = "IRIS <- iris; MTCARS <- mtcars"),
+  modules = teal::modules(
+    teal.modules.general::tm_data_table(
+      label = "Data Tables",
+      dataname = "IRIS"
+    ),
+    teal.modules.general::tm_variable_browser(
+      label = "Variable Browser",
+      dataname = "IRIS"
+    ),
+    teal.modules.general::tm_g_scatterplot(
+      label = "Scatter Plot",
+      x = teal.transform::data_extract_spec(
+        dataname = "IRIS",
+        select = teal.transform::select_spec(
+          choices = teal.transform::variable_choices("IRIS", c("Sepal.Length", "Sepal.Width")),
+          selected = "Sepal.Length"
+        )
+      ),
+      y = teal.transform::data_extract_spec(
+        dataname = "IRIS",
+        select = teal.transform::select_spec(
+          choices = teal.transform::variable_choices("IRIS", c("Petal.Length", "Petal.Width")),
+          selected = "Petal.Length"
+        )
+      )
+    )
+  )
+)
+
+shiny_app <- shiny::shinyApp(app$ui, app$server)
+
+if (interactive()) {
+  shiny_app
+} else {
+  return(shiny_app)
+}

@@ -1,0 +1,56 @@
+# Complex coupling with multiple relationships
+complex_coupling_demo <- teal::init(
+  data = coupled_demo_data,
+  modules = teal::modules(
+    tm_g_scatterplot(
+      label = "Cross-Dataset Analysis",
+      dataname = "ADSL",
+      x = data_extract_spec(
+        dataname = "ADSL",
+        select = select_spec(
+          choices = variable_choices("ADSL", "AGE"),
+          selected = "AGE"
+        )
+      ),
+      y = data_extract_spec(
+        dataname = "ADSL",
+        select = select_spec(
+          choices = variable_choices("ADSL", "BMIBL"),
+          selected = "BMIBL"
+        )
+      ),
+      color_by = data_extract_spec(
+        dataname = "ADSL",
+        select = select_spec(
+          choices = variable_choices("ADSL", "ARM"),
+          selected = "ARM"
+        )
+      )
+    )
+  ),
+  # Initial filters demonstrating coupling
+  filter = teal_slices(
+    teal_slice(
+      dataname = "ADSL",
+      varname = "SEX",
+      selected = "F",
+      title = "Female Subjects"
+    ),
+    teal_slice(
+      dataname = "ADAE",
+      varname = "AESEV",
+      selected = "SEVERE",
+      title = "Severe AEs Only"
+    )
+  )
+)
+
+# This demonstrates:
+# - ADSL filtered to females affects all child datasets
+# - ADAE filtered to severe AEs doesn't affect ADSL
+# - Combined effect: Analysis focuses on severe AEs in female subjects
+# - All visualizations remain consistent with these population definitions
+
+if (interactive()) {
+  shiny::shinyApp(complex_coupling_demo$ui, complex_coupling_demo$server)
+}

@@ -1,0 +1,19 @@
+library(teal.modules.general)
+
+app <- teal::init(
+  data = teal.data::teal_data(IRIS = iris),
+  modules = teal::modules(
+    teal.modules.general::tm_data_table(
+      label = "Data Explorer",
+      datanames = "IRIS"
+    )
+  )
+)
+
+shiny_app <- shiny::shinyApp(app$ui, app$server)
+
+if (interactive()) {
+  shiny_app
+} else {
+  return(shiny_app)
+}

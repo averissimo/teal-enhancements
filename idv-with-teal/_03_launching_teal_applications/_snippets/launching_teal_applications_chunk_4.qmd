@@ -1,0 +1,14 @@
+# For CDISC/ADaM data with relationships
+my_data <- cdisc_data(
+  ADSL = adsl_data,
+  ADAE = adae_data,
+  code = c(
+    "ADSL <- adsl_data",
+    "ADAE <- adae_data"
+  )
+)
+
+app <- init(
+  data = my_data,
+  modules = modules(...)
+)

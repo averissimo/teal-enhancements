@@ -1,0 +1,13 @@
+# Basic pattern for TMG modules
+tm_module_name(
+  label = "User-friendly name",           # Appears in navigation
+  dataname = "DATASET_NAME",              # Must match dataset in teal_data
+  # Module-specific parameters using data_extract_spec
+  variable_param = data_extract_spec(
+    dataname = "DATASET_NAME",
+    select = select_spec(
+      choices = variable_choices("DATASET_NAME", c("VAR1", "VAR2")),
+      selected = "VAR1"
+    )
+  )
+)

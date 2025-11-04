@@ -1,0 +1,11 @@
+# Create data using teal_data()
+my_data <- teal_data(
+  ADSL = adsl_data,
+  ADAE = adae_data,
+  IRIS = iris
+)
+
+app <- init(
+  data = my_data,
+  modules = modules(...)
+)

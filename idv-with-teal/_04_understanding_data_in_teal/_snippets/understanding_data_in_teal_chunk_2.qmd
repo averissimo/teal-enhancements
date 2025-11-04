@@ -1,0 +1,10 @@
+library(teal.data)
+
+# Create a basic teal_data object
+my_data <- teal_data(
+  IRIS = iris,
+  MTCARS = mtcars
+)
+
+# View the structure
+print(my_data)

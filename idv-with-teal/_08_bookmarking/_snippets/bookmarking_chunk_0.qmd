@@ -1,0 +1,57 @@
+library(teal)
+library(teal.modules.general)
+library(teal.data)
+library(pharmaverseadam)
+
+# Load data for bookmarking demonstration
+data("adsl", package = "pharmaverseadam")
+data("adae", package = "pharmaverseadam")
+
+# Create teal_data object with join keys
+bookmark_data <- teal_data()
+bookmark_data <- within(bookmark_data, {
+  ADSL <- adsl
+  ADAE <- adae
+})
+
+# Set up join keys for proper data relationships
+join_keys(bookmark_data) <- default_cdisc_join_keys[names(bookmark_data)]
+
+# Application with bookmarking enabled
+bookmarking_app <- teal::init(
+  data = bookmark_data,
+  modules = teal::modules(
+    tm_data_table(
+      label = "Subject Data",
+      dataname = "ADSL"
+    ),
+    tm_g_distribution(
+      label = "Age Distribution",
+      dataname = "ADSL",
+      dist_var = data_extract_spec(
+        dataname = "ADSL",
+        select = select_spec(
+          choices = variable_choices(bookmark_data[["ADSL"]], c("AGE", "BMRKR1")),
+          selected = "AGE",
+          multiple = FALSE
+        )
+      )
+    ),
+    tm_t_events(
+      label = "Adverse Events Summary",
+      dataname = "ADAE",
+      arm_var = data_extract_spec(
+        dataname = "ADSL",
+        select = select_spec(
+          choices = variable_choices(bookmark_data[["ADSL"]], c("ARM", "ARMCD")),
+          selected = "ARM",
+          multiple = FALSE
+        )
+      )
+    )
+  ),
+  title = "Bookmarking Demo Application"
+)
+
+# Launch the application
+# shinyApp(bookmarking_app$ui, bookmarking_app$server)

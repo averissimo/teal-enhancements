@@ -1,0 +1,30 @@
+# Example: Creating conditional or site-specific relationships
+create_advanced_join_keys <- function() {
+  # Sometimes you need more complex relationships
+  # For example, linking datasets only within the same site
+
+  advanced_keys <- join_keys(
+    # Standard primary keys
+    join_key("ADSL", "ADSL", c("STUDYID", "USUBJID")),
+    join_key("ADAE", "ADAE", c("STUDYID", "USUBJID", "AESEQ")),
+    join_key("ADCM", "ADCM", c("STUDYID", "USUBJID", "CMSEQ")),
+
+    # Site-aware relationships (include SITEID in joins)
+    join_key("ADSL", "ADAE", c("STUDYID", "USUBJID", "SITEID")),
+    join_key("ADSL", "ADCM", c("STUDYID", "USUBJID", "SITEID"))
+  )
+
+  return(advanced_keys)
+}
+
+# Apply advanced join keys
+advanced_keys <- create_advanced_join_keys()
+advanced_data <- custom_data  # Start with our existing data
+join_keys(advanced_data) <- advanced_keys
+
+cat("\nAdvanced join keys (site-aware):\n")
+print(join_keys(advanced_data))
+
+# This approach ensures that:
+# - AEs are only linked to subjects from the same site
+# - Concomitant medications are only linked to subjects from the same site

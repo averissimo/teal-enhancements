@@ -1,0 +1,70 @@
+# Example 2: Only filter_spec - Row filtering only
+app_filter_only <- teal::init(
+  data = demo_data,
+  modules = teal::modules(
+    tm_g_scatterplot(
+      label = "Example 2: Filter Spec Only",
+      dataname = "ADSL",
+      x = data_extract_spec(
+        dataname = "ADSL",
+        select = select_spec(
+          choices = variable_choices("ADSL"),  # All numeric variables available
+          selected = "AGE",
+          multiple = FALSE,
+          fixed = FALSE
+        ),
+        filter = filter_spec(
+          vars = "ARM",
+          choices = value_choices("ADSL", "ARM"),
+          selected = "Placebo",
+          multiple = FALSE,
+          label = "Treatment Arm"
+        )
+      ),
+      y = data_extract_spec(
+        dataname = "ADSL",
+        select = select_spec(
+          choices = variable_choices("ADSL"),  # All numeric variables available
+          selected = "BMIBL",
+          multiple = FALSE,
+          fixed = FALSE
+        ),
+        filter = filter_spec(
+          vars = "SEX",
+          choices = value_choices("ADSL", "SEX"),
+          selected = "F",
+          multiple = FALSE,
+          label = "Gender"
+        )
+      ),
+      color_by = data_extract_spec(
+        dataname = "ADSL",
+        select = select_spec(
+          choices = variable_choices("ADSL"),  # All categorical variables available
+          selected = "RACE",
+          multiple = FALSE,
+          fixed = FALSE
+        ),
+        filter = filter_spec(
+          vars = "AGEGR1",
+          choices = value_choices("ADSL", "AGEGR1"),
+          selected = c("18-64", ">=65"),
+          multiple = TRUE,
+          label = "Age Group"
+        )
+      )
+    )
+  )
+)
+
+# What you'll see:
+# - Only female subjects on placebo in specified age groups included
+# - X-axis dropdown: All available numeric variables (many options)
+# - Y-axis dropdown: All available numeric variables (many options)
+# - Color dropdown: All available categorical variables (many options)
+# - Pre-filtering applied: ARM="Placebo" AND SEX="F" AND AGEGR1 in ("18-64", ">=65")
+# - Smaller subset of data used for analysis
+
+if (interactive()) {
+  shiny::shinyApp(app_filter_only$ui, app_filter_only$server)
+}

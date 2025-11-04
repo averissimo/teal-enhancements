@@ -1,0 +1,33 @@
+project:
+  title: "Interactive Data Visualisation Using the Teal Framework"
+  output-dir: docs
+  type: website
+
+website:
+  title: "JNJ IDV Training"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Start
+      - href: 01_foreward.qmd
+        text: Foreward
+      - href: 02_prerequisites.qmd
+        text: Prerequisites
+      - href: 03_launching_teal_applications.qmd
+        text: Teal basics
+      - href: 04_understanding_data_in_teal.qmd
+        text: Data in teal
+      - href: 05_launching_tmg_and_tmc_modules.qmd
+        text: Launching built-in modules
+      - href: 06_filter_panel.qmd
+        text: Filter panel
+      - href: 07_report_functionality.qmd
+        text: Report
+      - href: 08_bookmarking.qmd
+        text: Bookmarking
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true

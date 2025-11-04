@@ -1,0 +1,34 @@
+library(teal)
+library(teal.modules.general)
+library(teal.data)
+library(pharmaverseadam)
+
+# Load data to demonstrate filter panel structure
+data("adsl", package = "pharmaverseadam")
+data("adae", package = "pharmaverseadam")
+
+# Create teal_data object
+demo_data <- teal_data()
+demo_data <- within(demo_data, {
+  ADSL <- adsl
+  ADAE <- adae
+})
+
+# Basic application to show filter panel structure
+app <- teal::init(
+  data = demo_data,
+  modules = teal::modules(
+    tm_data_table(
+      label = "ADSL Data",
+      dataname = "ADSL"
+    ),
+    tm_data_table(
+      label = "ADAE Data",
+      dataname = "ADAE"
+    )
+  )
+)
+
+if (interactive()) {
+  shiny::shinyApp(app$ui, app$server)
+}

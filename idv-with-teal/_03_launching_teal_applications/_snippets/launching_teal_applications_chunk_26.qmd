@@ -1,0 +1,8 @@
+# Convert character columns to factors if appropriate
+optimize_data <- function(df) {
+  char_cols <- sapply(df, is.character)
+  df[char_cols] <- lapply(df[char_cols], as.factor)
+  return(df)
+}
+
+optimized_data <- optimize_data(your_data)

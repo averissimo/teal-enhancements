@@ -1,0 +1,91 @@
+library(teal)
+library(teal.modules.general)
+library(teal.data)
+library(pharmaverseadam)
+
+# Load data for report functionality demonstration
+data("adsl", package = "pharmaverseadam")
+data("adae", package = "pharmaverseadam")
+
+# Create teal_data object
+report_demo_data <- teal_data()
+report_demo_data <- within(report_demo_data, {
+  ADSL <- adsl
+  ADAE <- adae
+})
+
+# Application with comprehensive reporting capabilities
+report_ui_demo <- teal::init(
+  data = report_demo_data,
+  modules = teal::modules(
+    tm_data_table(
+      label = "ADSL Data Explorer",
+      dataname = "ADSL"
+    ),
+    tm_g_distribution(
+      label = "Age Distribution",
+      dataname = "ADSL",
+      dist_var = data_extract_spec(
+        dataname = "ADSL",
+        select = select_spec(
+          choices = variable_choices("ADSL", "AGE"),
+          selected = "AGE"
+        )
+      ),
+      strata_var = data_extract_spec(
+        dataname = "ADSL",
+        select = select_spec(
+          choices = variable_choices("ADSL", "ARM"),
+          selected = "ARM"
+        )
+      )
+    ),
+    tm_g_scatterplot(
+      label = "Age vs BMI Scatter",
+      dataname = "ADSL",
+      x = data_extract_spec(
+        dataname = "ADSL",
+        select = select_spec(
+          choices = variable_choices("ADSL", "AGE"),
+          selected = "AGE"
+        )
+      ),
+      y = data_extract_spec(
+        dataname = "ADSL",
+        select = select_spec(
+          choices = variable_choices("ADSL", "BMIBL"),
+          selected = "BMIBL"
+        )
+      ),
+      color_by = data_extract_spec(
+        dataname = "ADSL",
+        select = select_spec(
+          choices = variable_choices("ADSL", "ARM"),
+          selected = "ARM"
+        )
+      )
+    ),
+    tm_t_summary(
+      label = "Demographics Summary",
+      dataname = "ADSL",
+      summarize_vars = data_extract_spec(
+        dataname = "ADSL",
+        select = select_spec(
+          choices = variable_choices("ADSL", c("AGE", "SEX", "RACE", "BMIBL")),
+          selected = c("AGE", "SEX", "RACE"),
+          multiple = TRUE
+        )
+      )
+    )
+  ),
+  title = "Clinical Data Analysis - Report Functionality Demo"
+)
+
+# When you run this application, you'll see the report interface components:
+# 1. "Add to Report" button in each module
+# 2. "Report" tab in the main navigation
+# 3. Report preview and management tools
+
+if (interactive()) {
+  shiny::shinyApp(report_ui_demo$ui, report_ui_demo$server)
+}

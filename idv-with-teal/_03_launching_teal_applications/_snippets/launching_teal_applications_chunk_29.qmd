@@ -1,0 +1,11 @@
+# Test individual modules
+test_module <- function(data, module_func) {
+  tryCatch({
+    app <- teal::init(data = data, modules = teal::modules(module_func))
+    message("Module test passed")
+    return(TRUE)
+  }, error = function(e) {
+    message("Module test failed:", e$message)
+    return(FALSE)
+  })
+}

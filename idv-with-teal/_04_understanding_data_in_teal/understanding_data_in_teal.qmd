@@ -1,0 +1,221 @@
+# Understanding Data in `teal`
+
+## Learning objectives
+
+- Understand `teal` data management and relationships
+- Can create their own `teal.data` objects with custom `join_keys` for CDISC data relationships
+- Understand data flow from `teal.data` through filters to modules
+
+Data management is at the heart of every `teal` application.
+The `teal.data` package provides a unified framework for handling datasets,
+defining relationships between them, and ensuring reproducibility.
+This section will guide you through the core concepts and practical applications of data management in `teal`.
+
+## Data flow in `teal` applications
+
+**Learning Objective:** Understand how data flows from `teal.data` objects through the filter panel to modules.
+
+Understanding data flow is crucial for building effective `teal` applications. Let's trace how data moves through the system:
+
+## The complete data flow
+
+```
+Raw Data → teal.data → Filter Panel → Filtered Data → Modules → Output
+```
+
+## Demonstrating data flow with code
+
+[Run this code in Shinylive](https://shinylive.io/r/editor/#gist=228162896311861ab3f571f6041f5c6e)
+```{webr}
+{{< include _04_understanding_data_in_teal/_snippets/understanding_data_in_teal_chunk_1.qmd >}}
+```
+
+## `teal.data` as a vehicle for user data
+
+**Learning objective**: Understand `teal` data management prototypes.
+
+The `teal.data` package serves as the foundation for all data operations in `teal`. It provides a structured way to:
+- Store multiple datasets in a single object
+- Track the code used to create or modify data
+- Define relationships between datasets
+
+## Creating basic `teal_data` objects
+
+The simplest way to create a `teal_data` object is using the `teal_data()` function:
+
+[Run this code in Shinylive](https://shinylive.io/r/editor/#gist=dfb5d9522a923da16bddd5799f4dcca7)
+```{webr}
+{{< include _04_understanding_data_in_teal/_snippets/understanding_data_in_teal_chunk_2.qmd >}}
+```
+
+## Understanding the `teal_data` structure
+
+When you create a `teal_data` object, `teal` does several things behind the scenes:
+
+1. **Data storage** - Your datasets are stored within the object
+2. **Code tracking** - The creation process is recorded for reproducibility
+3. **Metadata creation** - Information about datasets and their relationships is stored
+
+## Adding code for reproducibility
+
+One of the key features of `teal.data` is its ability to track the code used to generate data:
+
+[Run this code in Shinylive](https://shinylive.io/r/editor/#gist=409efd75bdcc21dfc319789198454e10)
+```{webr}
+{{< include _04_understanding_data_in_teal/_snippets/understanding_data_in_teal_chunk_3.qmd >}}
+```
+
+This ability is later required by the `teal` modules to generate the reproducible
+code for the analysis.
+
+---
+
+## Understanding `join_keys`
+
+**Learning Objective:** Master the creation and management of dataset relationships using `join_keys`.
+
+`join_keys` define how datasets relate to each other, which is crucial for:
+- Proper filtering across related datasets (coming back to the first
+  example - filtering on the parent dataset filtered out entries in the child
+  dataset as well!)
+- Correct data merging in modules (`join_key` are used by the modules
+  to merge datasets together)
+
+## What is the purpose of `join_keys`?
+
+`join_keys` serve several critical functions:
+
+1. **Data Relationships** - Define how datasets connect (parent-child relationships)
+2. **Filter Propagation** - Ensure filters apply correctly across related datasets
+3. **Module Integration** - Help modules understand how to merge data correctly
+
+## How to create `join_keys` manually
+
+Sometimes you need to create or modify join keys manually:
+
+[Run this code in Shinylive](https://shinylive.io/r/editor/#gist=7c2122f52e6cbf40e28816d88558ef3b)
+```{webr}
+{{< include _04_understanding_data_in_teal/_snippets/understanding_data_in_teal_chunk_4.qmd >}}
+```
+
+## Printing `join_keys` and understanding the output
+
+[Run this code in Shinylive](https://shinylive.io/r/editor/#gist=ec32b7b02b12cf89f6a28ae1e64aaf46)
+```{webr}
+{{< include _04_understanding_data_in_teal/_snippets/understanding_data_in_teal_chunk_5.qmd >}}
+```
+
+## `cdisc_data` as a vehicle for structured ADaM data
+
+**Learning Objective:** Understand when and how to use `cdisc_data()` for clinical trial data with automatic relationship detection.
+
+For clinical trial data following CDISC standards, `teal.data` provides the specialized `cdisc_data()` function that automatically handles common clinical data relationships.
+
+## When to use `cdisc_data()`
+
+Use `cdisc_data()` when you have:
+- ADaM datasets (ADSL, ADAE, ADCM, etc.)
+- Standard CDISC variable names (STUDYID, USUBJID, etc.)
+- Need for automatic join key detection
+- Clinical trial data with known relationships
+
+## Creating `cdisc_data` objects
+
+[Run this code in Shinylive](https://shinylive.io/r/editor/#gist=57f15100a6ce12d140d387fa2806a700)
+```{webr}
+{{< include _04_understanding_data_in_teal/_snippets/understanding_data_in_teal_chunk_6.qmd >}}
+```
+
+## Automatic join key detection
+
+One of the key advantages of `cdisc_data()` is automatic join key detection:
+
+[Run this code in Shinylive](https://shinylive.io/r/editor/#gist=01508893364a95003dba1bb9a59efc66)
+```{webr}
+{{< include _04_understanding_data_in_teal/_snippets/understanding_data_in_teal_chunk_7.qmd >}}
+```
+
+## Manual `cdisc_data` creation with explicit code
+
+[Run this code in Shinylive](https://shinylive.io/r/editor/#gist=d531cad0d7d5fbae3e5426e5def659e1)
+```{webr}
+{{< include _04_understanding_data_in_teal/_snippets/understanding_data_in_teal_chunk_8.qmd >}}
+```
+
+---
+
+## Recreating `join_keys` for a CDISC example (ADSL-ADAE)
+
+Let's walk through a complete example of creating proper join keys for a typical CDISC study:
+
+[Run this code in Shinylive](https://shinylive.io/r/editor/#gist=562475845c2627f3876fd2d1f0a256e7)
+```{webr}
+{{< include _04_understanding_data_in_teal/_snippets/understanding_data_in_teal_chunk_9.qmd >}}
+```
+
+---
+
+## Data preprocessing
+
+**Learning Objective:** Understand best practices for data preprocessing in `teal` applications and how to encapsulate preprocessing within `teal.data` objects.
+
+## Best practices for data preprocessing
+
+1. **Separate preprocessing from application logic**
+2. **Document all transformations with code**
+3. **Validate data after preprocessing**
+4. **Use consistent variable naming and types**
+5. **Handle missing values appropriately**
+
+## Where should preprocessing happen?
+
+[Run this code in Shinylive](https://shinylive.io/r/editor/#gist=dd76208da9c43168bbb804fb738994ad)
+```{webr}
+{{< include _04_understanding_data_in_teal/_snippets/understanding_data_in_teal_chunk_10.qmd >}}
+```
+
+## Encapsulating data preprocessing in `teal.data`
+
+[Run this code in Shinylive](https://shinylive.io/r/editor/#gist=25fed60a9cfd6e0d2e84dd5fa493c529)
+```{webr}
+{{< include _04_understanding_data_in_teal/_snippets/understanding_data_in_teal_chunk_11.qmd >}}
+```
+
+---
+
+## Data flow in `teal` applications continued
+
+## Overwriting automatic join keys in `cdisc_data`
+
+**Learning Objective:** Understand how to modify the automatic join keys of a `cdisc_data` object to customize dataset relationships.
+
+Sometimes the automatic join key detection in `cdisc_data()` doesn't match your specific needs. Here's how to override the default behavior:
+
+[Run this code in Shinylive](https://shinylive.io/r/editor/#gist=e8639cd5d73dc6cb590182896d3ff84e)
+```{webr}
+{{< include _04_understanding_data_in_teal/_snippets/understanding_data_in_teal_chunk_12.qmd >}}
+```
+
+This example demonstrates how to override automatic join keys in `cdisc_data` objects, providing you with complete control over how datasets relate to each other in your `teal` applications. The custom relationships affect filtering behavior and merging behaviour inside
+the modules.
+
+## Advanced join key customization
+
+[Run this code in Shinylive](https://shinylive.io/r/editor/#gist=908e745b6af0974cdcfb6eae713f3a05)
+```{webr}
+{{< include _04_understanding_data_in_teal/_snippets/understanding_data_in_teal_chunk_13.qmd >}}
+```
+---
+
+## Handling large datasets - performance considerations
+
+**Learning Objective:** Understand strategies for optimizing `teal` applications with large clinical datasets.
+
+Working with large clinical datasets requires careful consideration of performance and memory usage.
+
+## Performance optimization strategies
+
+[Run this code in Shinylive](https://shinylive.io/r/editor/#gist=049e9bd68c89405a03cadde1539dd4dd)
+```{webr}
+{{< include _04_understanding_data_in_teal/_snippets/understanding_data_in_teal_chunk_14.qmd >}}
+```

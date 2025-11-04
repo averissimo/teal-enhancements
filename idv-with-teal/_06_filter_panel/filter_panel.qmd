@@ -1,0 +1,196 @@
+# Filter Panel
+
+## Learning objectives
+
+- Understand the relationship between the filter panel and data passed to modules
+- Can save and restore filtering states
+- Can launch a `teal` application with a custom filtering state
+- Understand the coupled nature of filtering and hierarchical relationships
+
+The filter panel is one of the most powerful features of `teal` applications, providing users with dynamic, interactive data filtering capabilities. It appears on the left side of every `teal` application and automatically adapts to your data structure, enabling real-time data exploration and analysis.
+
+## The structure of the filter panel UI
+
+**Learning Objective:** Understand the visual organization and components of the filter panel interface.
+
+The filter panel follows a consistent, intuitive structure that adapts to your data:
+
+## Basic filter panel layout
+
+[Run this code in Shinylive](https://shinylive.io/r/editor/#gist=0d30e6031f92e8756c161ed715e9c6b5)
+```{webr}
+{{< include _06_filter_panel/_snippets/filter_panel_chunk_0.qmd >}}
+```
+
+## Filter panel components
+
+When you launch this application, the filter panel displays:
+
+## **1. Dataset Sections**
+- **ADSL Section**: Contains filters for all ADSL variables
+- **ADAE Section**: Contains filters for all ADAE variables
+- Each section can be **expanded/collapsed** for better organization
+
+## **2. Variable Type Filters**
+- **Categorical Variables** (SEX, ARM, RACE): Show as **checkboxes** with all unique values
+- **Numeric Variables** (AGE, BMIBL): Show as **range sliders** with min/max values
+- **Date Variables** (RFSTDTC, RFENDTC): Show as **date pickers** with calendar interface
+- **Logical Variables**: Show as **checkbox selections** (TRUE/FALSE)
+
+## **3. Filter Controls**
+- **"Add Filter" button**: Add new filters for any variable
+- **"Remove" buttons**: Remove individual filters
+- **"Clear all" option**: Reset all filters to default state
+- **Filter counters**: Show how many subjects/records remain after filtering
+
+## **4. Search and Navigation**
+- **Variable search**: Find specific variables quickly in large datasets
+- **Collapsible sections**: Organize filters by dataset for better navigation
+- **Filter summaries**: Show active filter states at a glance
+
+---
+
+## How filters in the filter panel work
+
+**Learning Objective:** Understand the mechanics of filtering and how different filter types behave.
+
+## filter mechanics by variable type
+
+## Categorical variable filtering
+
+[Run this code in Shinylive](https://shinylive.io/r/editor/#gist=c7bcd8d1c14bdc39190997112f3b46d3)
+```{webr}
+{{< include _06_filter_panel/_snippets/filter_panel_chunk_1.qmd >}}
+```
+
+## Numeric variable filtering
+
+[Run this code in Shinylive](https://shinylive.io/r/editor/#gist=ed5ccdcea27a88d86c179e5bce119db8)
+```{webr}
+{{< include _06_filter_panel/_snippets/filter_panel_chunk_2.qmd >}}
+```
+
+## Filter behavior characteristics
+
+1. **Real-time Updates**: Changes apply immediately to all modules
+2. **Inclusive Logic**: Multiple selections within a variable use OR logic
+3. **Exclusive Logic**: Multiple variables use AND logic
+4. **Range Filtering**: Numeric variables filter by continuous ranges
+5. **Missing Value Handling**: Special options for NA/missing values
+
+---
+
+## How to save filters and restore them
+
+**Learning Objective:** Master the filter state management system for reproducible analysis workflows.
+
+## Understanding filter state
+
+Filter states in `teal` can be saved, exported, and restored, enabling reproducible analysis workflows.
+
+## Saving filter states
+
+[Run this code in Shinylive](https://shinylive.io/r/editor/#gist=652f9372a69f71ae5dce7a32e5e5a4c0)
+```{webr}
+{{< include _06_filter_panel/_snippets/filter_panel_chunk_3.qmd >}}
+```
+
+## Programmatic filter state management
+
+[Run this code in Shinylive](https://shinylive.io/r/editor/#gist=eade2911122cb67a90561ae3a2361622)
+```{webr}
+{{< include _06_filter_panel/_snippets/filter_panel_chunk_4.qmd >}}
+```
+
+## Restoring filter states
+
+[Run this code in Shinylive](https://shinylive.io/r/editor/#gist=d01ca1059967cdd9e06126bddd2b1502)
+```{webr}
+{{< include _06_filter_panel/_snippets/filter_panel_chunk_5.qmd >}}
+```
+
+## Filter state export formats
+
+Filter states can be exported in multiple formats:
+
+1. **R Code**: Complete reproducible code
+2. **JSON**: Structured data format for integration
+3. **Bookmark URLs**: Shareable application links
+4. **RDS Files**: Binary R objects for efficient storage
+
+---
+
+## Providing filter state on initial application launch
+
+**Learning Objective:** Learn how to launch `teal` applications with predefined filters for specific analysis scenarios.
+
+## Launching with predefined filters
+
+[Run this code in Shinylive](https://shinylive.io/r/editor/#gist=513c689cf97a950fef6a4aa71491f7d0)
+```{webr}
+{{< include _06_filter_panel/_snippets/filter_panel_chunk_6.qmd >}}
+```
+
+## Advanced initial filter configurations
+
+[Run this code in Shinylive](https://shinylive.io/r/editor/#gist=3f6995bcf007254235c0b41f807bbbc0)
+```{webr}
+{{< include _06_filter_panel/_snippets/filter_panel_chunk_7.qmd >}}
+```
+
+---
+
+## Understanding the coupled nature of filtering
+
+**Learning Objective:** Master how filtering propagates through related datasets and hierarchical data structures.
+
+## Coupled filtering mechanism
+
+In `teal`, filtering is "coupled" - when you filter one dataset, related datasets are automatically filtered based on their relationships (join keys).
+
+## Demonstration of coupled filtering
+
+[Run this code in Shinylive](https://shinylive.io/r/editor/#gist=73f6a9f523db4ea299a1d6f8e4e08ed8)
+```{webr}
+{{< include _06_filter_panel/_snippets/filter_panel_chunk_8.qmd >}}
+```
+
+## Hierarchical filtering behavior
+
+[Run this code in Shinylive](https://shinylive.io/r/editor/#gist=140ca085f2b0d4d0eb46ac19d3328bec)
+```{webr}
+{{< include _06_filter_panel/_snippets/filter_panel_chunk_9.qmd >}}
+```
+
+## Understanding filter propagation rules
+
+## **Rule 1: Parent → Child Filtering**
+[Run this code in Shinylive](https://shinylive.io/r/editor/#gist=45376442d2d858c204a5079af4472ef1)
+```{webr}
+{{< include _06_filter_panel/_snippets/filter_panel_chunk_10.qmd >}}
+```
+
+## **Rule 2: Child Filtering Independence**
+[Run this code in Shinylive](https://shinylive.io/r/editor/#gist=a600b1c79afc70224ca545cd497c206a)
+```{webr}
+{{< include _06_filter_panel/_snippets/filter_panel_chunk_11.qmd >}}
+```
+
+## **Rule 3: Multiple Filter Combination**
+[Run this code in Shinylive](https://shinylive.io/r/editor/#gist=490f7fa0c0916e9f842c2a0c853e5ad8)
+```{webr}
+{{< include _06_filter_panel/_snippets/filter_panel_chunk_12.qmd >}}
+```
+
+## Practical implications of coupled filtering
+
+1. **Data Consistency**: Related datasets always remain synchronized
+2. **Analysis Integrity**: Prevents analysis of mismatched populations
+3. **User Experience**: Intuitive behavior matches analytical expectations
+
+## Advanced coupling scenarios
+
+[Run this code in Shinylive](https://shinylive.io/r/editor/#gist=e26584c8e59808c63aa9e94bb3982f01)
+```{webr}
+{{< include _06_filter_panel/_snippets/filter_panel_chunk_13.qmd >}}
+```

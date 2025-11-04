@@ -1,0 +1,241 @@
+# Report Functionality
+
+## Learning objectives
+
+- Understand the role of the report in a `teal` application
+- Can save and import a report
+- Master the report UI structure and editing capabilities
+- Understand how to investigate and work with saved reports
+
+The report functionality in `teal` applications provides users with powerful capabilities to generate, customize, and share reproducible analysis reports. This feature leverages the `teal.reporter` package to create professional documentation of analysis workflows, making it easy to communicate findings and maintain analysis reproducibility.
+
+---
+
+## The structure of the report UI
+
+**Learning Objective:** Master the report interface components and understand how to interact with report generation tools.
+
+The report functionality in `teal` applications is integrated seamlessly into the user interface, providing intuitive tools for report creation and management.
+
+## Report UI components overview
+
+[Run this code in Shinylive](https://shinylive.io/r/editor/#gist=048d86bcdf30ebfc6359fab2346dc411)
+```{webr}
+{{< include _07_report_functionality/_snippets/report_functionality_chunk_0.qmd >}}
+```
+
+## Report UI structure components
+
+When you launch the application, the report functionality provides several key interface elements:
+
+## **1. Module-Level Report Controls**
+
+Each module in your `teal` application automatically includes:
+
+- **"Add to Report" Button**: Located in each module's interface
+- **Content Selection**: Choose which outputs to include (plots, tables, summaries)
+- **Custom Naming**: Add descriptive titles and comments for report cards
+- **Immediate Feedback**: Visual confirmation when content is added
+
+## **2. Main Report Tab**
+
+The dedicated "Report" tab provides:
+
+- **Report Preview**: Live view of all added report cards
+- **Report Organization**: Drag-and-drop reordering of report sections
+- **Report Management**: Tools for editing, removing, and organizing content
+- **Export Options**: Download reports in multiple formats
+
+## **3. Report Card Management**
+
+Individual report cards feature:
+
+- **Card Headers**: Module name, timestamp, and custom titles
+- **Content Display**: Plots, tables, and analysis outputs
+- **Edit Controls**: Modify titles, add comments, remove cards
+- **Reordering**: Drag-and-drop functionality for logical organization
+
+## Adding to the report
+
+**Learning Objective:** Master the process of adding analysis content to reports and customizing report cards.
+
+## Basic report addition workflow
+
+[Run this code in Shinylive](https://shinylive.io/r/editor/#gist=90acff9a4030bb497ad9f47a411b206f)
+```{webr}
+{{< include _07_report_functionality/_snippets/report_functionality_chunk_1.qmd >}}
+```
+
+## Report addition best practices
+
+1. **Logical Organization**: Add content in the order you want it to appear
+2. **Descriptive Titles**: Use clear, professional titles for each report card
+3. **Contextual Comments**: Include methodology, interpretation, and limitations
+4. **Filter Documentation**: Note the population and filters applied
+5. **Cross-References**: Link related analyses and findings
+
+## Previewing the report
+
+**Learning Objective:** Master the report preview functionality and understand how to review and organize report content before finalization.
+
+## Report preview interface
+
+The report preview provides a comprehensive view of your analysis documentation:
+
+[Run this code in Shinylive](https://shinylive.io/r/editor/#gist=4b8d72d0a479d1bfbedcc6a604d85866)
+```{webr}
+{{< include _07_report_functionality/_snippets/report_functionality_chunk_2.qmd >}}
+```
+
+## Preview interface components
+
+## **Report Structure View**
+- **Table of Contents**: Overview of all report sections
+- **Card Sequence**: Visual representation of report flow
+- **Content Summary**: Quick overview of included analyses
+- **Filter Context**: Documentation of applied data filters
+
+## **Individual Card Preview**
+- **Full Content Display**: Complete view of plots, tables, and outputs
+- **Metadata Information**: Timestamps, module sources, filter states
+- **Custom Annotations**: Titles, comments, and interpretations
+- **Reproducibility Info**: R code and data processing details
+
+## **Navigation Tools**
+- **Section Jumping**: Quick navigation between report sections
+- **Search Functionality**: Find specific content within the report
+- **Zoom Controls**: Detailed view of individual visualizations
+- **Print Preview**: Layout optimization for different output formats
+
+## Basic report edits: rearrange report cards
+
+**Learning Objective:** Master report organization and editing capabilities to create logically structured analysis documentation.
+
+## Report card reordering
+
+[Run this code in Shinylive](https://shinylive.io/r/editor/#gist=6d63a1305cb49d3d5882434697016646)
+```{webr}
+{{< include _07_report_functionality/_snippets/report_functionality_chunk_3.qmd >}}
+```
+
+## Report editing capabilities
+
+## **Drag-and-Drop Reordering**
+- **Visual Interface**: Intuitive drag-and-drop controls
+- **Section Management**: Organize cards into logical sections
+- **Real-time Preview**: See changes immediately
+- **Undo Functionality**: Reverse unwanted changes
+
+## **Card Editing Options**
+- **Title Modification**: Update titles for clarity and professionalism
+- **Comment Addition**: Add interpretation, methodology notes, limitations
+- **Card Removal**: Delete unnecessary or outdated content
+- **Duplicate Detection**: Identify and manage similar content
+
+## **Content Enhancement**
+- **Section Headers**: Add organizational structure
+- **Transition Text**: Connect related analyses
+- **Methodology Notes**: Document analytical approaches
+- **Interpretation Comments**: Provide clinical context and conclusions
+
+---
+
+## Saving the report
+
+**Learning Objective:** Master the report export process and understand different output formats for various use cases.
+
+## Report export options
+
+[Run this code in Shinylive](https://shinylive.io/r/editor/#gist=f82ee3b54acd453a083af4583ecbcba3)
+```{webr}
+{{< include _07_report_functionality/_snippets/report_functionality_chunk_4.qmd >}}
+```
+
+## Export format options
+
+## **HTML Reports**
+- **Interactive plots and tables**
+- **Embedded R code for reproducibility**
+- **Cross-references and navigation**
+- **Responsive design for different devices**
+- **Easy sharing via web browsers**
+
+## **PDF Reports**
+- **High-quality graphics and tables**
+- **Consistent formatting across platforms**
+- **Professional layout and typography**
+- **Suitable for regulatory submissions**
+- **Offline accessibility**
+
+## **Word Document Reports**
+- **Editable text and formatting**
+- **Comment and review capabilities**
+- **Integration with Microsoft Office**
+- **Template customization options**
+- **Track changes functionality**
+
+## Investigating a saved `teal` report
+
+**Learning Objective:** Master the process of examining, understanding, and working with previously saved `teal` reports.
+
+## Report structure analysis
+
+When investigating a saved `teal` report, you can extract comprehensive information:
+
+[Run this code in Shinylive](https://shinylive.io/r/editor/#gist=8d5d49bb26ae6b6ff8de89bf113ddf12)
+```{webr}
+{{< include _07_report_functionality/_snippets/report_functionality_chunk_5.qmd >}}
+```
+
+## Report validation and quality assessment
+
+[Run this code in Shinylive](https://shinylive.io/r/editor/#gist=49fce69ce73e2b0484cf6e9eff75d1a9)
+```{webr}
+{{< include _07_report_functionality/_snippets/report_functionality_chunk_6.qmd >}}
+```
+
+## Importing the report
+
+**Learning Objective:** Master the process of importing and working with previously saved `teal` reports in new analysis sessions.
+
+## Report import workflow
+
+[Run this code in Shinylive](https://shinylive.io/r/editor/#gist=236b5bc8c16d974bef3b5c43f7f46cd3)
+```{webr}
+{{< include _07_report_functionality/_snippets/report_functionality_chunk_7.qmd >}}
+```
+
+## Import use cases
+
+## **Collaborative Analysis Workflow**
+- **Team collaboration**: Multiple analysts contributing to comprehensive reports
+- **Quality assurance**: Peer review and validation processes
+- **Version control**: Maintaining audit trails and analysis history
+- **Consistent methodology**: Standardized approaches across team members
+
+## **Template-Based Analysis**
+- **Standardized reporting**: Using proven analysis templates for new studies
+- **Efficiency gains**: Reduced development time for similar analyses
+- **Quality assurance**: Consistent reporting formats and methodologies
+- **Best practices**: Leveraging validated analytical approaches
+
+## Advanced Import Features
+
+## **Selective Import Options**
+- **Module-specific import**: Import only relevant analysis components
+- **Date-based filtering**: Import recent analyses or specific time periods
+- **Population-based selection**: Import analyses for specific study populations
+- **Treatment-specific content**: Focus on particular treatment comparisons
+
+## **Cross-Study Comparisons**
+- **Multi-study analysis**: Import and compare reports from different studies
+- **Meta-analysis capabilities**: Pooled analysis across multiple studies
+- **Standardized comparisons**: Aligned methodologies for valid comparisons
+- **Regulatory briefings**: Comprehensive cross-study documentation
+
+## Summary
+
+The report functionality in `teal` provides a comprehensive solution for creating, managing,
+and sharing professional analysis documentation. By mastering these capabilities,
+users can create reproducible, high-quality reports that meet the demanding
+standards of pharmaceutical research and regulatory submission requirements.

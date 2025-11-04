@@ -1,0 +1,35 @@
+# Demonstration of report import capabilities
+report_import_demo <- teal::init(
+  data = report_demo_data,
+  modules = teal::modules(
+    tm_data_table(
+      label = "Import Demo - Data Table",
+      dataname = "ADSL"
+    ),
+    tm_t_summary(
+      label = "Import Demo - Summary",
+      dataname = "ADSL",
+      summarize_vars = data_extract_spec(
+        dataname = "ADSL",
+        select = select_spec(
+          choices = variable_choices("ADSL", c("AGE", "SEX", "RACE")),
+          selected = c("AGE", "SEX"),
+          multiple = TRUE
+        )
+      )
+    )
+  ),
+  title = "Report Import Demonstration"
+)
+
+# Report import process:
+# 1. Launch teal application
+# 2. Navigate to Report tab
+# 3. Click "Import Report" button
+# 4. Select previously saved report file
+# 5. Review imported content
+# 6. Merge with current session or replace current report
+
+if (interactive()) {
+  shiny::shinyApp(report_import_demo$ui, report_import_demo$server)
+}

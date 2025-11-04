@@ -1,0 +1,60 @@
+# Practical example of bookmark workflow
+library(teal)
+library(teal.modules.general)
+library(teal.data)
+library(pharmaverseadam)
+
+data("adsl", package = "pharmaverseadam")
+data("adae", package = "pharmaverseadam")
+
+# Create application for bookmark workflow demonstration
+workflow_data <- teal_data()
+workflow_data <- within(workflow_data, {
+  ADSL <- adsl
+  ADAE <- adae
+})
+
+join_keys(workflow_data) <- default_cdisc_join_keys[names(workflow_data)]
+
+# Application designed for workflow demonstration
+workflow_app <- teal::init(
+  data = workflow_data,
+  modules = teal::modules(
+    tm_g_distribution(
+      label = "Demographics Analysis",
+      dataname = "ADSL",
+      dist_var = data_extract_spec(
+        dataname = "ADSL",
+        select = select_spec(
+          choices = variable_choices(workflow_data[["ADSL"]], c("AGE", "BMRKR1", "BMRKR2")),
+          selected = "AGE",
+          multiple = FALSE
+        )
+      ),
+      strata_var = data_extract_spec(
+        dataname = "ADSL",
+        select = select_spec(
+          choices = variable_choices(workflow_data[["ADSL"]], c("ARM", "SEX", "RACE")),
+          selected = "ARM",
+          multiple = FALSE
+        )
+      )
+    ),
+
+    tm_t_events(
+      label = "Safety Overview",
+      dataname = "ADAE",
+      arm_var = data_extract_spec(
+        dataname = "ADSL",
+        select = select_spec(
+          choices = variable_choices(workflow_data[["ADSL"]], c("ARM", "ARMCD")),
+          selected = "ARM",
+          multiple = FALSE
+        )
+      )
+    )
+  ),
+  title = "Analysis Workflow Demo"
+)
+
+# shinyApp(workflow_app$ui, workflow_app$server)

@@ -1,0 +1,26 @@
+# Complex filter expressions for sophisticated population definitions
+advanced_filters <- teal_slices(
+  # Complex expression filter
+  teal_slice(
+    dataname = "ADSL",
+    expr = "AGE >= 65 & BMIBL < 30",
+    title = "Elderly Non-Obese",
+    id = "elderly_normal_bmi"
+  ),
+
+  # Multiple variable combination
+  teal_slice(
+    dataname = "ADSL",
+    expr = "ARM %in% c('Placebo', 'Xanomeline High Dose') & SEX == 'F'",
+    title = "Female Primary Arms",
+    id = "female_primary"
+  ),
+
+  # Date-based filtering
+  teal_slice(
+    dataname = "ADSL",
+    varname = "RFSTDTC",
+    selected = c(as.Date("2013-01-01"), as.Date("2014-12-31")),
+    title = "Study Period 2013-2014"
+  )
+)

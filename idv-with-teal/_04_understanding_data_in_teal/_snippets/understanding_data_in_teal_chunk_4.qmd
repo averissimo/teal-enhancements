@@ -1,0 +1,29 @@
+# Create a teal_data object without automatic join detection
+my_data <- teal_data(
+  PATIENTS = data.frame(
+    patient_id = 1:100,
+    age = sample(18:80, 100, replace = TRUE),
+    treatment = sample(c("A", "B"), 100, replace = TRUE)
+  ),
+  VISITS = data.frame(
+    patient_id = rep(1:100, each = 4),
+    visit_num = rep(1:4, 100),
+    visit_date = seq.Date(as.Date("2024-01-01"), by = "week", length.out = 400),
+    measurement = rnorm(400, 100, 15)
+  ),
+  EVENTS = data.frame(
+    patient_id = sample(1:100, 200, replace = TRUE),
+    event_type = sample(c("AE", "CM", "EX"), 200, replace = TRUE),
+    event_date = sample(seq.Date(as.Date("2024-01-01"), as.Date("2024-12-31"), by = "day"), 200)
+  )
+)
+
+# Manually define join keys
+join_keys(my_data) <- join_keys(
+  join_key("PATIENTS", "VISITS", "patient_id"),
+  join_key("PATIENTS", "EVENTS", "patient_id")
+)
+
+# View the join keys
+print("Manual join keys:")
+print(join_keys(my_data))

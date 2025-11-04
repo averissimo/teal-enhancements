@@ -1,0 +1,9 @@
+init(
+  data,
+  modules,
+  filter = teal_slices(),
+  title = "teal app",
+  header = tags$p(),
+  footer = tags$p(),
+  ...
+)

@@ -1,0 +1,6 @@
+# Check for conflicts
+library(teal)
+library(teal.modules.general)
+library(teal.data)
+
+# If you encounter version conflicts, restart R session and load in order

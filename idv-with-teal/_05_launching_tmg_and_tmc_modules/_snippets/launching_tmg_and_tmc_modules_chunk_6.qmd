@@ -1,0 +1,64 @@
+library(teal)
+library(teal.modules.general)
+library(teal.data)
+library(pharmaverseadam)
+
+# Load data
+data("adsl", package = "pharmaverseadam")
+
+# Create teal_data object
+demo_data <- teal_data()
+demo_data <- within(demo_data, {
+  ADSL <- adsl
+})
+
+# Example 1: Only select_spec - Column selection only
+app_select_only <- teal::init(
+  data = demo_data,
+  modules = teal::modules(
+    tm_g_scatterplot(
+      label = "Example 1: Select Spec Only",
+      dataname = "ADSL",
+      x = data_extract_spec(
+        dataname = "ADSL",
+        select = select_spec(
+          choices = variable_choices("ADSL", c("AGE", "BMIBL", "HEIGHTBL", "WEIGHTBL")),
+          selected = "AGE",
+          multiple = FALSE,
+          fixed = FALSE
+        )
+        # No filter specified - all rows included
+      ),
+      y = data_extract_spec(
+        dataname = "ADSL",
+        select = select_spec(
+          choices = variable_choices("ADSL", c("BMIBL", "HEIGHTBL", "WEIGHTBL")),
+          selected = "BMIBL",
+          multiple = FALSE,
+          fixed = FALSE
+        )
+        # No filter specified - all rows included
+      ),
+      color_by = data_extract_spec(
+        dataname = "ADSL",
+        select = select_spec(
+          choices = variable_choices("ADSL", c("ARM", "SEX", "RACE", "AGEGR1")),
+          selected = "ARM",
+          multiple = FALSE,
+          fixed = FALSE
+        )
+      )
+    )
+  )
+)
+
+# What you'll see:
+# - All 254 subjects included in the plot
+# - X-axis dropdown: AGE, BMIBL, HEIGHTBL, WEIGHTBL options
+# - Y-axis dropdown: BMIBL, HEIGHTBL, WEIGHTBL options
+# - Color dropdown: ARM, SEX, RACE, AGEGR1 options
+# - No pre-filtering applied - full dataset used
+
+if (interactive()) {
+  shiny::shinyApp(app_select_only$ui, app_select_only$server)
+}

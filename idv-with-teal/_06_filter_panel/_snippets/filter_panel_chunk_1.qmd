@@ -1,0 +1,31 @@
+# Demonstrate categorical filtering behavior
+categorical_demo <- teal::init(
+  data = demo_data,
+  modules = teal::modules(
+    tm_variable_browser(
+      label = "Variable Browser",
+      dataname = "ADSL"
+    ),
+    tm_g_distribution(
+      label = "Treatment Distribution",
+      dataname = "ADSL",
+      dist_var = data_extract_spec(
+        dataname = "ADSL",
+        select = select_spec(
+          choices = variable_choices("ADSL", "ARM"),
+          selected = "ARM"
+        )
+      )
+    )
+  )
+)
+
+# When you filter ARM (treatment):
+# - Checkboxes show: "Placebo", "Xanomeline High Dose", "Xanomeline Low Dose"
+# - Selecting "Placebo" only shows placebo subjects
+# - Multiple selections are combined with OR logic
+# - Unselected values are completely filtered out
+
+if (interactive()) {
+  shiny::shinyApp(categorical_demo$ui, categorical_demo$server)
+}

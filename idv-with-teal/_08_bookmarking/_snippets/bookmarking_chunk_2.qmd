@@ -1,0 +1,60 @@
+# Example showing the breadth of bookmarked state
+library(teal)
+library(teal.modules.general)
+library(teal.data)
+library(pharmaverseadam)
+
+data("adsl", package = "pharmaverseadam")
+data("adae", package = "pharmaverseadam")
+
+# Create data with complex filtering scenarios
+state_demo_data <- teal_data()
+state_demo_data <- within(state_demo_data, {
+  ADSL <- adsl
+  ADAE <- adae
+
+  # Add some derived variables to show complex state
+  ADSL$AGE_GROUP <- cut(ADSL$AGE,
+                       breaks = c(0, 65, 80, Inf),
+                       labels = c("< 65", "65-80", "> 80"))
+
+  ADAE$SEVERITY_GRADE <- sample(c("Mild", "Moderate", "Severe"),
+                               nrow(ADAE), replace = TRUE)
+})
+
+join_keys(state_demo_data) <- default_cdisc_join_keys[names(state_demo_data)]
+
+# Application demonstrating comprehensive state bookmarking
+state_capture_app <- teal::init(
+  data = state_demo_data,
+  modules = teal::modules(
+    tm_g_distribution(
+      label = "Age Analysis",
+      dataname = "ADSL",
+      dist_var = data_extract_spec(
+        dataname = "ADSL",
+        select = select_spec(
+          choices = variable_choices(state_demo_data[["ADSL"]], c("AGE", "BMRKR1")),
+          selected = "AGE",
+          multiple = FALSE
+        )
+      ),
+      strata_var = data_extract_spec(
+        dataname = "ADSL",
+        select = select_spec(
+          choices = variable_choices(state_demo_data[["ADSL"]], c("ARM", "SEX", "AGE_GROUP")),
+          selected = NULL,
+          multiple = FALSE
+        )
+      )
+    ),
+
+    tm_data_table(
+      label = "Adverse Events",
+      dataname = "ADAE"
+    )
+  ),
+  title = "State Capture Demo"
+)
+
+# shinyApp(state_capture_app$ui, state_capture_app$server)

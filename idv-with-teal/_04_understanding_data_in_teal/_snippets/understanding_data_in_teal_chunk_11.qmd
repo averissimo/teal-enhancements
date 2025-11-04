@@ -1,0 +1,35 @@
+# Option 2: Encapsulate preprocessing in teal.data
+create_clinical_data <- function(raw_adsl, raw_adae) {
+  clinical_data <- teal_data()
+
+  clinical_data <- within(clinical_data, {
+    # ADSL preprocessing
+    ADSL <- raw_adsl
+
+    # Convert to factors
+    factor_vars <- c("SEX", "RACE", "ARM", "ACTARM", "SAFFL", "ITTFL")
+    ADSL[factor_vars] <- lapply(ADSL[factor_vars], as.factor)
+
+    # Create age groups
+    ADSL$AGEGR1 <- cut(ADSL$AGE,
+                       breaks = c(0, 30, 50, 65, 100),
+                       labels = c("<30", "30-50", "50-65", ">65"),
+                       right = FALSE)
+
+    # ADAE preprocessing
+    ADAE <- raw_adae
+
+    # Convert to factors
+    ae_factor_vars <- c("AESEV", "AESER", "AEREL", "AEACN", "SAFFL")
+    ADAE[ae_factor_vars] <- lapply(ADAE[ae_factor_vars], as.factor)
+
+    # Data validation
+    stopifnot("All ADAE subjects must exist in ADSL" =
+              all(ADAE$USUBJID %in% ADSL$USUBJID))
+  })
+
+  return(clinical_data)
+}
+
+# Usage example
+# clinical_data <- create_clinical_data(raw_adsl_data, raw_adae_data)

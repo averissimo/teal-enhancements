@@ -1,0 +1,70 @@
+# Example 3: Both select_spec and filter_spec - Full control
+app_select_and_filter <- teal::init(
+  data = demo_data,
+  modules = teal::modules(
+    tm_g_scatterplot(
+      label = "Example 3: Select + Filter Specs",
+      dataname = "ADSL",
+      x = data_extract_spec(
+        dataname = "ADSL",
+        select = select_spec(
+          choices = variable_choices("ADSL", c("AGE", "BMIBL", "HEIGHTBL")),  # Limited choices
+          selected = "AGE",
+          multiple = FALSE,
+          fixed = FALSE
+        ),
+        filter = filter_spec(
+          vars = "ARM",
+          choices = value_choices("ADSL", "ARM"),
+          selected = c("Placebo", "Xanomeline High Dose"),
+          multiple = TRUE,
+          label = "Treatment Arms"
+        )
+      ),
+      y = data_extract_spec(
+        dataname = "ADSL",
+        select = select_spec(
+          choices = variable_choices("ADSL", c("BMIBL", "HEIGHTBL", "WEIGHTBL")),  # Limited choices
+          selected = "BMIBL",
+          multiple = FALSE,
+          fixed = FALSE
+        ),
+        filter = filter_spec(
+          vars = "SAFFL",
+          choices = value_choices("ADSL", "SAFFL"),
+          selected = "Y",
+          multiple = FALSE,
+          label = "Safety Population"
+        )
+      ),
+      color_by = data_extract_spec(
+        dataname = "ADSL",
+        select = select_spec(
+          choices = variable_choices("ADSL", c("SEX", "RACE", "AGEGR1")),  # Limited choices
+          selected = "SEX",
+          multiple = FALSE,
+          fixed = FALSE
+        ),
+        filter = filter_spec(
+          vars = "AGE",
+          choices = c(18, 85),  # Age range filter
+          selected = c(30, 70),
+          multiple = TRUE,
+          label = "Age Range"
+        )
+      )
+    )
+  )
+)
+
+# What you'll see:
+# - Only subjects aged 30-70 in safety population on specific treatments
+# - X-axis dropdown: Only AGE, BMIBL, HEIGHTBL (focused choices)
+# - Y-axis dropdown: Only BMIBL, HEIGHTBL, WEIGHTBL (focused choices)
+# - Color dropdown: Only SEX, RACE, AGEGR1 (focused choices)
+# - Pre-filtering applied: ARM in ("Placebo", "Xanomeline High Dose") AND SAFFL="Y" AND AGE between 30-70
+# - Precisely controlled dataset and user options
+
+if (interactive()) {
+  shiny::shinyApp(app_select_and_filter$ui, app_select_and_filter$server)
+}

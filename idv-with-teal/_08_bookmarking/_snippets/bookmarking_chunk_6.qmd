@@ -1,0 +1,60 @@
+# Example handling complex filter scenarios
+library(teal)
+library(teal.modules.general)
+library(teal.data)
+
+# Data with complex relationships for bookmark testing
+complex_data <- teal_data()
+complex_data <- within(complex_data, {
+  # Parent dataset
+  ADSL <- data.frame(
+    USUBJID = paste0("SUB", sprintf("%03d", 1:200)),
+    ARM = sample(c("Placebo", "Low Dose", "High Dose"), 200, replace = TRUE),
+    AGE = sample(18:85, 200, replace = TRUE),
+    SEX = sample(c("M", "F"), 200, replace = TRUE),
+    RACE = sample(c("WHITE", "BLACK", "ASIAN", "OTHER"), 200, replace = TRUE)
+  )
+
+  # Child dataset with many-to-one relationship
+  ADAE <- data.frame(
+    USUBJID = rep(ADSL$USUBJID, sample(0:5, 200, replace = TRUE)),
+    AEDECOD = sample(c("Headache", "Nausea", "Fatigue", "Dizziness"), 500, replace = TRUE),
+    AESEV = sample(c("MILD", "MODERATE", "SEVERE"), 500, replace = TRUE)
+  )
+
+  # Remove empty subjects
+  ADAE <- ADAE[ADAE$USUBJID != "", ]
+})
+
+# Set up proper join keys for complex relationships
+join_keys(complex_data) <- default_cdisc_join_keys[names(complex_data)]
+
+# Application for testing complex bookmark scenarios
+complex_bookmark_app <- teal::init(
+  data = complex_data,
+  modules = teal::modules(
+    tm_data_table(
+      label = "Subject Data",
+      dataname = "ADSL"
+    ),
+    tm_data_table(
+      label = "Adverse Events",
+      dataname = "ADAE"
+    ),
+    tm_t_events(
+      label = "AE Summary",
+      dataname = "ADAE",
+      arm_var = data_extract_spec(
+        dataname = "ADSL",
+        select = select_spec(
+          choices = variable_choices(complex_data[["ADSL"]], "ARM"),
+          selected = "ARM",
+          multiple = FALSE
+        )
+      )
+    )
+  ),
+  title = "Complex Bookmark Testing"
+)
+
+# shinyApp(complex_bookmark_app$ui, complex_bookmark_app$server)

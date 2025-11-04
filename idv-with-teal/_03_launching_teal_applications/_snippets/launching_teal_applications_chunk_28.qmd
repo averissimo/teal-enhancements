@@ -1,0 +1,13 @@
+# Data inspection checklist
+inspect_data <- function(data, name) {
+  cat("Dataset:", name, "\n")
+  cat("Dimensions:", dim(data), "\n")
+  cat("Column names:", paste(names(data), collapse = ", "), "\n")
+  cat("Column types:", paste(sapply(data, class), collapse = ", "), "\n")
+  cat("Missing values:", sum(is.na(data)), "\n")
+  cat("First few rows:\n")
+  print(head(data, 3))
+  cat("\n")
+}
+
+inspect_data(iris, "IRIS")

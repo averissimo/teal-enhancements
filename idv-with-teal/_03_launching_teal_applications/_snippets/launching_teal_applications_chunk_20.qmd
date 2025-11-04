@@ -1,0 +1,24 @@
+# Safe approach - let variable_choices auto-detect
+app <- teal::init(
+  data = teal_data(IRIS = iris),
+  modules = teal::modules(
+    teal.modules.general::tm_g_scatterplot(
+      label = "Scatter Plot",
+      dataname = "IRIS",
+      x = teal.transform::data_extract_spec(
+        dataname = "IRIS",
+        select = teal.transform::select_spec(
+          choices = teal.transform::variable_choices("IRIS"), # Auto-detect all columns
+          selected = NULL # Let user choose
+        )
+      ),
+      y = teal.transform::data_extract_spec(
+        dataname = "IRIS",
+        select = teal.transform::select_spec(
+          choices = teal.transform::variable_choices("IRIS", c("Petal.Length", "Petal.Width")),
+          selected = "Petal.Length"
+        )
+      )
+    )
+  )
+)

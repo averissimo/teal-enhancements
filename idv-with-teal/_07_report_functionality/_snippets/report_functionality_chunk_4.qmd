@@ -1,0 +1,109 @@
+# Comprehensive example for report saving demonstration
+report_saving_demo <- teal::init(
+  data = report_demo_data,
+  modules = teal::modules(
+    # Create a complete analysis workflow for export
+    teal::modules(
+      label = "📊 Study Population",
+      tm_data_table(
+        label = "Subject Listing",
+        dataname = "ADSL"
+      ),
+      tm_t_summary(
+        label = "Demographic Characteristics",
+        dataname = "ADSL",
+        summarize_vars = data_extract_spec(
+          dataname = "ADSL",
+          select = select_spec(
+            choices = variable_choices("ADSL", c("AGE", "SEX", "RACE", "BMIBL")),
+            selected = c("AGE", "SEX", "RACE"),
+            multiple = TRUE
+          )
+        ),
+        by_vars = data_extract_spec(
+          dataname = "ADSL",
+          select = select_spec(
+            choices = variable_choices("ADSL", "ARM"),
+            selected = "ARM"
+          )
+        )
+      )
+    ),
+
+    teal::modules(
+      label = "📈 Exploratory Analysis",
+      tm_g_distribution(
+        label = "Age Distribution by Treatment",
+        dataname = "ADSL",
+        dist_var = data_extract_spec(
+          dataname = "ADSL",
+          select = select_spec(
+            choices = variable_choices("ADSL", "AGE"),
+            selected = "AGE"
+          )
+        ),
+        strata_var = data_extract_spec(
+          dataname = "ADSL",
+          select = select_spec(
+            choices = variable_choices("ADSL", "ARM"),
+            selected = "ARM"
+          )
+        )
+      ),
+      tm_g_scatterplot(
+        label = "BMI vs Age Analysis",
+        dataname = "ADSL",
+        x = data_extract_spec(
+          dataname = "ADSL",
+          select = select_spec(
+            choices = variable_choices("ADSL", "AGE"),
+            selected = "AGE"
+          )
+        ),
+        y = data_extract_spec(
+          dataname = "ADSL",
+          select = select_spec(
+            choices = variable_choices("ADSL", "BMIBL"),
+            selected = "BMIBL"
+          )
+        ),
+        color_by = data_extract_spec(
+          dataname = "ADSL",
+          select = select_spec(
+            choices = variable_choices("ADSL", "ARM"),
+            selected = "ARM"
+          )
+        )
+      )
+    )
+  ),
+  # Apply meaningful filters for the analysis context
+  filter = teal_slices(
+    teal_slice(
+      dataname = "ADSL",
+      varname = "SAFFL",
+      selected = "Y",
+      title = "Safety Population"
+    ),
+    teal_slice(
+      dataname = "ADSL",
+      varname = "ARM",
+      selected = c("Placebo", "Xanomeline High Dose"),
+      title = "Primary Analysis Arms"
+    )
+  ),
+  title = "Clinical Study Analysis - Export Demo"
+)
+
+# Report saving workflow:
+# 1. Complete your analysis and add content to report
+# 2. Navigate to Report tab and review content
+# 3. Click "Download Report" button
+# 4. Choose export format (HTML, PDF, Word)
+# 5. Add report metadata (title, author, date)
+# 6. Customize export settings
+# 7. Save report to desired location
+
+if (interactive()) {
+  shiny::shinyApp(report_saving_demo$ui, report_saving_demo$server)
+}

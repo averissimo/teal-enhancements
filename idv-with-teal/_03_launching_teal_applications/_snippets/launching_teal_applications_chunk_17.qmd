@@ -1,0 +1,8 @@
+# This may cause issues
+empty_data <- data.frame()
+app <- teal::init(
+  data = teal_data(EMPTY = empty_data),
+  modules = teal::modules(
+    tm_data_table("Data Table", datanames = "EMPTY")
+  )
+)

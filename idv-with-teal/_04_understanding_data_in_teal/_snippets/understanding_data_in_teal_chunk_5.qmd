@@ -1,0 +1,35 @@
+# Create example with multiple relationships
+complex_data <- cdisc_data()
+
+complex_data <- within(complex_data, {
+  ADSL <- data.frame(
+    STUDYID = rep("STUDY001", 30),
+    USUBJID = paste0("SUBJ", sprintf("%03d", 1:30)),
+    SITEID = sample(paste0("SITE", 1:5), 30, replace = TRUE),
+    AGE = sample(18:80, 30, replace = TRUE)
+  )
+
+  ADAE <- data.frame(
+    STUDYID = "STUDY001",
+    USUBJID = sample(ADSL$USUBJID, 90, replace = TRUE),
+    AESEQ = sequence(table(sample(ADSL$USUBJID, 90, replace = TRUE))),
+    AEDECOD = sample(c("Headache", "Nausea"), 90, replace = TRUE)
+  )
+
+  ADLB <- data.frame(
+    STUDYID = "STUDY001",
+    USUBJID = sample(ADSL$USUBJID, 120, replace = TRUE),
+    PARAMCD = sample(c("ALT", "AST", "BILI"), 120, replace = TRUE),
+    AVAL = rnorm(120, 50, 10)
+  )
+})
+
+# Print and interpret join keys
+cat("Join Keys Structure:\n")
+print(join_keys(complex_data))
+
+# Understanding the output:
+# - Each line shows a relationship between two datasets
+# - The arrow (->) indicates the direction (parent -> child)
+# - Variables in brackets show the joining columns
+# - ADSL is typically the parent (subject-level data)

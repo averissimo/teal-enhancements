@@ -1,0 +1,45 @@
+library(teal.modules.general)
+
+app <- teal::init(
+  data = teal.data::teal_data(IRIS = iris, MTCARS = mtcars),
+  modules = teal::modules(
+    teal.modules.general::tm_data_table("Data Table", datanames = "IRIS"),
+    teal.modules.general::tm_g_scatterplot(
+      label = "Scatter Plot",
+      x = teal.transform::data_extract_spec(
+        dataname = "IRIS",
+        select = teal.transform::select_spec(
+          choices = teal.transform::variable_choices("IRIS", c("Sepal.Length", "Sepal.Width")),
+          selected = "Sepal.Length"
+        )
+      ),
+      y = teal.transform::data_extract_spec(
+        dataname = "IRIS",
+        select = teal.transform::select_spec(
+          choices = teal.transform::variable_choices("IRIS", c("Petal.Length", "Petal.Width")),
+          selected = "Petal.Length"
+        )
+      )
+    )
+  )
+) |>
+  teal::modify_title(title = "Clinical Data Analysis Suite") |>
+  teal::modify_header(
+    element = shiny::tags$div(
+      style = "background: linear-gradient(90deg, #3498db, #2ecc71); color: white; padding: 15px; text-align: center;",
+      shiny::tags$h1("Data Explorer", style = "margin: 0;"),
+      shiny::tags$p("Interactive Analysis Platform", style = "margin: 5px 0 0 0;")
+    )
+  ) |>
+  teal::modify_footer(
+    element = shiny::tags$div(
+      style = "text-align: center; padding: 10px; background-color: #34495e; color: white;",
+      "Confidential - For Internal Use Only"
+    )
+  )
+
+if (interactive()) {
+  shiny::shinyApp(app$ui, app$server)
+} else {
+  shiny::shinyApp(app$ui, app$server)
+}
