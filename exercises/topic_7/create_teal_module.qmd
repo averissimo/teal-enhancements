@@ -1,7 +1,7 @@
 ---
 engine: knitr
 format:
-  html:
+  live-html:
     toc: true
   # live-revealjs:
   #   smaller: true
@@ -12,12 +12,14 @@ format:
   #       .reveal .slides section.fs-50 { font-size: .5em; }
   #       .reveal .slides section.fs-60 { font-size: .6em; }
   #       </style>
-webr:
-  packages:
-    - teal
-    - dplyr
-    - tidyr
-    - ggplot2
+#webr:
+#  packages:
+#    #- teal
+#    - dplyr
+#    - tidyr
+#    - ggplot2
+filters:
+  - shinylive
 ---
 
 ## How to create a teal module?
@@ -56,7 +58,7 @@ my_module <- teal::module(
 )
 ```
 
-## Base functionality of our custom module {.fs-50}
+## Base functionality of our custom module
 
 Let's create a custom module that shows a **simple histogram plot** based on user selected columns.
 
@@ -77,80 +79,21 @@ Let's create a custom module that shows a **simple histogram plot** based on use
   - Use named parameters in `within()` to pass shiny inputs
 
 
-## Initial teal module code {.fs-50}
+## Initial teal module code
 
 > See folder `exercice_7` for the code to start with
 
 ```{.r}
-library(teal)
-library(dplyr)
-library(ggplot2)
-
-my_custom_module_ui <- function(id) {
-  ns <- NS(id)
-  tags$div(
-    selectInput( # variable selector
-      inputId = ns("variable"),
-      label = "Select variable",
-      choices = NULL # initialize empty - to be updated from within server
-    ),
-    plotOutput(ns("plot")) # Output for the plot
-  )
-}
-
-my_custom_module_srv <- function(id, data) {
-  moduleServer(id, function(input, output, session) {
-
-    updateSelectInput( # update variable selector by names of data
-      inputId = "variable",
-      choices = data()[["ADSL"]] |> select(where(is.numeric)) |> names()
-    )
-
-    # add plot call to qenv
-    result <- reactive({
-      req(input$variable)
-      within(
-        data(),
-        {
-          plot <- ggplot(ADSL, aes(x = input_var)) + geom_histogram()
-        },
-        input_var = as.name(input$variable) # Pass the selected variable as a symbol
-      )
-    })
-
-    # render to output the object from qenv
-    output$plot <- renderPlot(result()[["plot"]])
-
-    result
-  })
-}
-
-my_custom_module <- module(
-  label = "My Custom Module",
-  ui = my_custom_module_ui,
-  server = my_custom_module_srv
-)
-
-data <- teal_data()
-data <- within(data, {
-  ADSL <- rADSL
-})
-
-app <- init(
-  data = data,
-  modules = list(my_custom_module)
-)
-
-shinyApp(app$ui, app$server)
+{{< include app.R >}}
 ```
 
 ## App running
 
-<video width="100%" controls autoplay loop muted>
-  <source src="app_example.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
-
+```{shinylive-r}
+#| standalone: true
+#| viewerHeight: 680
+{{< include app.R >}}
+```
 
 ## 🛠️ Exercise
 
@@ -161,7 +104,7 @@ Let's enhance the module:
     ![](input_slider.png)
 
     -   add a new widget to the UI
-        -   that widget should be created with `shiny::sliderInput()`
+        -   that widget may be created with `shiny::sliderInput()`
         -   make reasonable values of `min`, `max`, `step` and initial `value`
 
     -   read and use that widget in server
@@ -183,6 +126,66 @@ Let's enhance the module:
           step = 1,
           value = 3
         ),
+        # ... existing code ...
+      )
+    }
+    ```
+
+    ```{.r}
+    my_custom_module_srv <- function(id, data) {
+      moduleServer(id, function(input, output, session) {
+
+        # ... existing code ...
+
+        # add plot call to qenv
+        result <- reactive({
+          req(input$variable)
+          within(
+            data(),
+            {
+              plot <- ggplot(ADSL, aes(x = input_var)) +
+                geom_histogram(binwidth = input_binwidth)
+              plot
+            },
+            input_var = as.name(input$variable), # Pass the selected variable as a symbol
+            input_binwidth = input$binwidth
+          )
+        })
+
+        # ... existing code ...
+
+      })
+    }
+    ```
+    :::
+    
+-   Let's add reporter functionality to module
+
+    -   Add UI elements to UI function with `teal.reporter::simple_reporter_ui(id)`,
+    -   Add arguments called `reporter` and `filter_panel_api` to server function
+        -   Flag `teal` that module supports reporter
+    -   Create reporter in server function
+    
+        ```{.r}
+        with_filter <- !rlang::is_missing(filter_panel_api) && inherits(filter_panel_api, "FilterPanelApi")
+        card_fun <- function(card = teal.reporter::ReportCard$new(), comment) {
+          card$set_name("My custom module")
+          card$append_text(filter_panel_api$get_filter_state(), "verbatim")
+          card$append_text(paste("Selected var:", input$variable))
+          card$append_text(paste("Selected binwidth:", input$binwidth))
+          card$append_plot(result()$plot)
+        }
+        ```
+        
+    ::: {.callout-tip collapse="true"}
+    ## Answer
+
+    ```{.r code-line-numbers="1-9"}
+    my_custom_module_ui <- function(id) {
+      # ... existing code ...
+      tags$div(
+        # ... existing code ...,
+        teal.reporter::simple_reporter_ui(ns("reporter")),
         # ... existing code ...
       )
     }
@@ -215,6 +218,8 @@ Let's enhance the module:
     }
     ```
     :::
+
+## 🛠️ Bonus Exercise (add more datasets)
 
 -   Let's add more datasets
 
