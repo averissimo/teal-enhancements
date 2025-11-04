@@ -1,4 +1,0 @@
-Dataset → data_extract_spec → Module Processing → User Interface → Analysis Output
-   ↓            ↓                    ↓               ↓              ↓
-Raw Data → Column Selection → Row Filtering → UI Controls → Final Analysis
-         → Variable Choices → Data Subset → User Options → Processed Results

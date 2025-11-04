@@ -1,4 +1,0 @@
-<!---
-Topic 3: Launching `teal.modules.general` and `teal.modules.clinical` applications
---->
-{{< include ./_05_launching_tmg_and_tmc_modules/launching_tmg_and_tmc_modules.qmd >}}

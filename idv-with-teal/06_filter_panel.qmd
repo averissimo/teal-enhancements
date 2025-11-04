@@ -1,4 +1,0 @@
-<!---
-Topic 4: Filter panel
---->
-{{< include ./_06_filter_panel/filter_panel.qmd >}}

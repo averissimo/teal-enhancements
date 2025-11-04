@@ -1,5 +1,0 @@
-# View the automatically detected join keys
-join_keys(clinical_data)
-
-# The output will show:
-# ADSL <-> ADAE: [STUDYID, USUBJID]

@@ -1,8 +1,0 @@
-# Use sample of large dataset for development
-large_data <- your_large_dataset
-sample_data <- large_data[sample(nrow(large_data), 1000), ]
-
-app <- teal::init(
-  data = teal.data::teal_data(SAMPLE = sample_data),
-  modules = teal::modules(...)
-)

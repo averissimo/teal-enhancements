@@ -1,4 +1,0 @@
-<!---
-Topic 5: Report functionality
---->
-{{< include ./_07_report_functionality/report_functionality.qmd >}}

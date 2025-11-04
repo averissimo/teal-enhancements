@@ -1,7 +1,0 @@
-# Ensure bookmark compatibility across teal versions
-# Document teal version when creating important bookmarks
-
-# Check current teal version
-packageVersion("teal")
-packageVersion("teal.modules.general")
-packageVersion("teal.modules.clinical")

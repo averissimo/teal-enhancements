@@ -1,4 +1,0 @@
-ADSL (Parent) Filter: ARM = "Placebo"
-    ↓
-ADAE (Child) Result: Only AEs for placebo subjects
-ADCM (Child) Result: Only medications for placebo subjects

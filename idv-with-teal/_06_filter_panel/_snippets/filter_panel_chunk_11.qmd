@@ -1,4 +1,0 @@
-ADAE (Child) Filter: AESEV = "SEVERE"
-    ↓
-ADSL (Parent) Result: No change - still shows all subjects
-ADCM (Sibling) Result: No change - still shows all medications

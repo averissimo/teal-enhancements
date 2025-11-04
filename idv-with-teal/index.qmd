@@ -1,7 +1,0 @@
-# Introductory video
-
-Welcome to **Interactive Data Visualization** with *`teal`*!
-
-{{< video "./_01_foreward/foreward.mp4" >}}
-
-Please use the navigation bar at the top to explore the course.

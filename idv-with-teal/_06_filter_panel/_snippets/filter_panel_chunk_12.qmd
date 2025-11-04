@@ -1,3 +1,0 @@
-ADSL Filter: ARM = "Placebo" AND AGE >= 65
-    ↓
-Child Datasets: Only events/medications for elderly placebo subjects

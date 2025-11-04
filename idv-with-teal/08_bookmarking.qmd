@@ -1,4 +1,0 @@
-<!---
-Topic 6: Bookmarking
---->
-{{< include ./_08_bookmarking/bookmarking.qmd >}}
