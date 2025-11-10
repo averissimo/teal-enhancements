@@ -1,15 +1,14 @@
-##  How to install the `teal` framework? 
+##  How to install the `teal` framework?
 
 You should have all the packages already preinstalled during these workshops on
-the remote workbenches we have prepared. 
+the remote workbenches we have prepared.
 
 When you are starting from scratch (or just reinstalled your R version):
 ```{R}
 install.packages(c(
-    "teal", 
-    "teal.modules.clinical", 
-    "teal.modules.general", 
-    "teal.osprey", 
+    "teal",
+    "teal.modules.clinical",
+    "teal.modules.general",
     "pharmaverseadam"
 ))
 ```
