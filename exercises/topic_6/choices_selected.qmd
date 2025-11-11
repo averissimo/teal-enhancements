@@ -10,7 +10,7 @@ This topic will cover common scenarios app developers face when building teal ap
 - Providing choices without knowing the dataset structure upfront
 - Adapting to different datasets dynamically
 
-## Introduction to `choices_selected` and `value_choices`
+## Introduction to `choices_selected`
 
 ### Basic Usage
 
@@ -24,23 +24,12 @@ The choices can be provided in two ways:
 ```{webr message=FALSE, warning=FALSE}
 library(teal.transform)
 
-choices_selected(c("ARM", "ARMCD"), "ARM")
+choices_selected(c("ARM", "ARMCD"), "ARM") # Static
 
-choices_selected("ADSL", c("ARM", "ARMCD"), "ARM")
-```
-
-> The `value_choices` function retrieves the actual choices from a dataset based on variable names.
-
-- Requires a dataset to extract the values from specified columns
-  - Dataset can be provided directly or as a reference to be resolved later
-- When multiple columns are provided: it combines unique values from all specified columns
-
-```{webr}
-library(pharmaverseadam)
-# Basic choices_selected example
 ADSL <- pharmaverseadam::adsl
+choices_selected(variable_choices(ADSL, c("ARM", "ARMCD")), "ARM") # Data-dependent
 
-value_choices(ADSL, c("ARMCD"), c("ARM"))
+choices_selected(variable_choices("ADSL", c("ARM", "ARMCD")), "ARM") # Data-dependent and delayed
 ```
 
 ### `teal` example with clinical module
@@ -89,30 +78,43 @@ app <- init(
 runApp(app)
 ```
 
-## Using `variable_choices`
+## Using `value_choices`
 
-- `variable_choices` function allows you to dynamically select variables based on dataset characteristics.
+> The `value_choices` function retrieves the actual choices from a dataset based on variable names.
+
+- Requires a dataset to extract the values from specified columns
+  - Dataset can be provided directly or as a reference to be resolved later
+- When multiple columns are provided: it combines unique values from all specified columns
 
 ```{webr}
-ADSL$ARM <- as.factor(ADSL$ARM)
-ADSL$ARMCD <- as.factor(ADSL$ARMCD)
-ADSL$SEX <- as.factor(ADSL$SEX)
-ADSL$RACE <- as.factor(ADSL$RACE)
+library(pharmaverseadam)
+# Basic choices_selected example
+ADSL <- pharmaverseadam::adsl
 
-factor_vars <- variable_choices(ADSL, subset = function(data) {
-  idx <- vapply(data, is.factor, logical(1))
+value_choices(ADSL, c("ARMCD"), c("ARM"))
+
+choices_selected(value_choices(ADSL, c("ARMCD"), c("ARM")))
+```
+
+## Using `variable_choices`
+
+> The `variable_choices` function allows you to dynamically select variables based on dataset characteristics.
+
+```{webr}
+numeric_vars <- variable_choices(ADSL, subset = function(data) {
+  idx <- vapply(data, is.numeric, logical(1))
   names(data)[idx]
 })
 
 # Use with choices_selected
 analysis_vars <- choices_selected(
-  choices = factor_vars,
+  choices = numeric_vars,
   selected = variable_choices(ADSL, subset = function(data) {
-    names(data)[names(data) %in% c("SEX", "RACE")]
+    names(data)[names(data) %in% c("AGE", "TRTDURD")]
   })
 )
 
-print(analysis_vars)
+analysis_vars
 ```
 
 ### Eager evaluation vs. Delayed evaluation
@@ -170,15 +172,16 @@ Using Kaplan-Meier module from `teal.modules.clinical`
 ::: {.callout-tip collapse="true"}
 ### Example App
 
-```{.shinylive-r}
+```{shinylive-r}
 #| standalone: true
 #| viewerHeight: 680
 {{< include support_km.R >}}
 ```
+
 :::
 
 
-## Exercise
+## 🛠️ Exercise
 
 Fill in the code below to create a teal application that uses `choices_selected` to limit the variable choices for a summary table module.
 
@@ -199,12 +202,34 @@ Fill in the code below to create a teal application that uses `choices_selected`
 ```
 :::
 
-## Summary
+## 📚 What did we learn?
 
-The `choices_selected` function provides powerful flexibility for managing variable selections in teal applications.
+The `choices_selected` and `value_choices` functions provides powerful flexibility for managing variable and value selections in teal applications.
 By combining it with `variable_choices` and understanding when to use eager vs. delayed evaluation, you can create robust applications that adapt to different datasets and provide users with appropriate choices.
 
 Key takeaways:
 - Use `variable_choices` with subset functions for dynamic filtering
 - Delayed evaluation helps when dataset structure is unknown
+  - Important with `teal_data_modules`
 - Smart defaults improve user experience across different datasets
+
+### 💭 What did we not cover?
+
+`data_extract_spec` is the underlying specification that powers `choices_selected` in the modules.
+It provides a more general framework for defining choices and selections, and can be customized further for advanced use cases.
+
+The `data_extract_ui` and `data_extract_srv` functions can be used in modules to create custom UI and server logic for data extraction based on `data_extract_spec` and `choices_selected` _(via `teal.modules.clinical::cs_to_des_select`)_.
+
+Useful links for further exploration:
+
+- [`data_extract_spec` documentation](https://insightsengineering.github.io/teal.transform/latest-tag/reference/data_extract_spec.html)
+- [`cs_to_des_select` documentation](https://insightsengineering.github.io/teal.modules.clinical/latest-tag/reference/cs_to_des_select.html)
+- [`data_extract_ui` documentation](https://insightsengineering.github.io/teal.transform/latest-tag/reference/data_extract_ui.html)
+- [`data_extract_srv` documentation](https://insightsengineering.github.io/teal.transform/latest-tag/reference/data_extract_srv.html)
+
+## 🌐 References
+
+- [`choices_selected()` documentation](https://insightsengineering.github.io/teal.transform/latest-tag/reference/choices_selected.html)
+- [`value_choices()` documentation](https://insightsengineering.github.io/teal.transform/latest-tag/reference/value_choices.html)
+- [`variable_choices()` documentation](https://insightsengineering.github.io/teal.transform/latest-tag/reference/variable_choices.html)
+

@@ -1,6 +1,7 @@
-library(pharmaverseadam)
+library(teal.data)
 library(teal.modules.clinical)
 library(teal.transform)
+
 data_km <- teal_data() |>
   within({
   ADSL <- pharmaverseadam::adsl
@@ -27,8 +28,6 @@ arm_ref_comp <- list(
     comp = c("Xanomeline High Dose", "Xanomeline Low Dose")
   )
 )
-ADSL <- data_km[["ADSL"]]
-ADTTE <- data_km[["ADTTE"]]
 
 app <- init(
   data = data_km,
@@ -56,4 +55,5 @@ app <- init(
     )
   )
 )
-runApp(app)
+
+shinyApp(ui = app$ui, server = app$server)

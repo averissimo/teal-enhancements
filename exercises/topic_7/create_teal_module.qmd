@@ -5,7 +5,7 @@ filters:
 
 {{< include ../../_extensions/r-wasm/live/_knitr.qmd >}}
 
-## Topic 7: Creating custom `teal` modules (20 minutes)
+## Topic 7: Creating a custom `teal` module (20 minutes)
 
 A teal module consists of two main components, similar to a Shiny module:
 
@@ -72,7 +72,7 @@ Let's create a custom module that shows a **simple histogram plot** based on use
 
 ## App running
 
-```{.shinylive-r}
+```{shinylive-r}
 #| standalone: true
 #| viewerHeight: 680
 {{< include app.R >}}
@@ -206,7 +206,7 @@ Let's enhance the module:
 
 -   Let's add more datasets
 
-    -   extend `data` with `ADAE = teal.data::rADAE`
+    -   extend `data` with `ADAE = teal.pharmaverse::adae`
     -   add a new widget in the UI
         -   that widget should be created with `shiny::selectInput()`
         -   initialize empty and update values in the same way as for `input$variable`
@@ -226,8 +226,8 @@ Let's enhance the module:
 
     ```{r, eval = FALSE}
     data <- within(data, {
-      ADSL <- rADSL
-      ADAE <- teal.data::rADAE
+      ADSL <- pharmaverseadam::adsl
+      ADAE <- pharmaverseadam::adae
     })
     ```
 

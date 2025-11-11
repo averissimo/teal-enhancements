@@ -11,7 +11,7 @@ data <- within(data, {
   ADSL$ARMCD <- as.factor(ADSL$ARMCD)
   ADSL$ACTARMCD <- as.factor(ADSL$ACTARMCD)
 
-  ADLB <- pharmaverseadam::adlb %>%
+  ADLB <- pharmaverseadam::adlb |>
     mutate(
       AVISIT = as.factor(AVISIT),
       AVISIT == fct_reorder(AVISIT, AVISITN, min),

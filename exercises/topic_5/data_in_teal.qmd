@@ -9,6 +9,10 @@ The `data` argument in `teal::init()` is where you specify all the datasets your
 
 ## Option 1: Using `teal_data()`
 
+```{r include=FALSE}
+library(teal.code) # prevent messsage in next code chunk
+```
+
 ```{r, messages=FALSE}
 library(teal.data)
 
@@ -26,7 +30,7 @@ print(my_data)
 
 One of the key features of `teal.data` is its ability to track the code used to generate data:
 
-```{r}
+```{r, messages=FALSE, warning=FALSE}
 # Create teal_data with explicit code tracking
 my_data <- teal_data()
 
@@ -43,7 +47,8 @@ my_data <- within(my_data, {
 })
 
 # View the tracked code
-get_code(my_data)
+get_code(my_data) |>
+  cat()
 ```
 
 ## Option 3: Using `cdisc_data()` for clinical data
