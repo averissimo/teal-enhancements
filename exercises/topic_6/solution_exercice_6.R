@@ -1,5 +1,7 @@
 library(dplyr)
 library(forcats)
+library(teal.transform)
+library(teal.modules.clinical)
 
 data <- teal_data()
 data <- within(data, {

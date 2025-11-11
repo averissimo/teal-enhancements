@@ -158,14 +158,14 @@ Let's enhance the module:
     }
     ```
     :::
-    
+
 -   Let's add reporter functionality to module
 
     -   Add UI elements to UI function with `teal.reporter::simple_reporter_ui(id)`,
     -   Add arguments called `reporter` and `filter_panel_api` to server function
         -   Flag `teal` that module supports reporter
     -   Create reporter in server function
-    
+
         ```{.r}
         with_filter <- !rlang::is_missing(filter_panel_api) && inherits(filter_panel_api, "FilterPanelApi")
         card_fun <- function(card = teal.reporter::ReportCard$new(), comment) {
@@ -176,7 +176,7 @@ Let's enhance the module:
           card$append_plot(result()$plot)
         }
         ```
-        
+
     ::: {.callout-tip collapse="true"}
     ## Answer
 

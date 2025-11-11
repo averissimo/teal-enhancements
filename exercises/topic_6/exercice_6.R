@@ -1,5 +1,7 @@
 library(dplyr)
 library(forcats)
+library(teal.transform)
+library(teal.modules.clinical)
 
 data <- teal_data()
 data <- within(data, {
@@ -28,9 +30,9 @@ app <- init(
     tm_g_lineplot(
       label = "Line Plot",
       dataname = "ADLB",
-      group_var = # Select Treatment variable,
-      y = # Select Analysis variable,
-      param = # Select Parameter of Interest
+      group_var = choices_selected(), # Select Treatment variable,
+      y = choices_selected(), # Select Analysis variable,
+      param = choices_selected() # Select Parameter of Interest
     )
   )
 )
