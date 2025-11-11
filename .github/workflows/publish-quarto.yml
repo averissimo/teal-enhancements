@@ -42,6 +42,7 @@ jobs:
             sudo apt-get install -y libcurl4-openssl-dev libssl-dev libxml2-dev libfontconfig1-dev \
               libcairo2-dev libharfbuzz-dev libfribidi-dev libfreetype6-dev libpng-dev libtiff5-dev \
               libjpeg-dev cmake libarchive-dev
+            renv::install("posit-dev/r-shinylive")
 
         - name: Set up renv
           uses: r-lib/actions/setup-renv@v2
