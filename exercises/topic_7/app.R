@@ -49,7 +49,7 @@ my_custom_module <- module(
 
 data <- teal_data()
 data <- within(data, {
-  ADSL <- adampharma::adsl
+  ADSL <- pharmaverseadam::adsl
 })
 
 app <- init(
