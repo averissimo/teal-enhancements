@@ -18,7 +18,7 @@ app <- teal::init(
 # Launch the application
 if (interactive()) {
   shiny::shinyApp(app$ui, app$server)
-} 
+}
 
 # Task 1:
 # 1. Add another dataset to the application - `mtcars`

@@ -19,7 +19,7 @@ data("adsl", package = "pharmaverseadam")
 
 # Step 2: Create teal_data object with the real dataset
 clinical_data <- cdisc_data(
-    ADSL = adsl
+    ADSL = adsl,
     code = "ADSL <- adsl"
 )
 

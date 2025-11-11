@@ -272,7 +272,7 @@ print(join_keys(complex_data))
 
 Sometimes you need to create or modify join keys manually, especially when working with non-standard data structures or when you need custom relationships.
 
-## Manual join key creation
+## Manual join keys creation
 
 ```{r}
 # Create a teal_data object without automatic join detection
