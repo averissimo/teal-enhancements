@@ -7,33 +7,63 @@ on:
 jobs:
   build-deploy:
       runs-on: ubuntu-latest
+      concurrency:
+        group: quarto-website-${{ github.event_name != 'pull_request' || github.run_id }}
       permissions:
-        contents: write
+        contents: read
+        pages: write
+        id-token: write
       steps:
         - name: Check out repository
           uses: actions/checkout@v3
 
+        # To render using knitr, we need a few more setup steps...
+        # If we didn't want the examples to use `engine: knitr`, we could
+        # skip a few of the setup steps.
+        - name: "Setup pandoc"
+          uses: r-lib/actions/setup-pandoc@v2
+
         - name: Set up R
           uses: r-lib/actions/setup-r@v2
 
-        - name: Set up Quarto
-          uses: quarto-dev/quarto-actions/setup@v2
+        - name: "Setup R dependencies for Quarto's knitr engine"
+          uses: r-lib/actions/setup-r-dependencies@v2
+          with:
+            packages:
+              github::posit-dev/r-shinylive
+              any::knitr
+              any::rmarkdown
+              any::downlit
+              any::xml2
 
         - name: Install system dependencies
           run: |
             sudo apt-get update
             sudo apt-get install -y libcurl4-openssl-dev libssl-dev libxml2-dev libfontconfig1-dev \
               libcairo2-dev libharfbuzz-dev libfribidi-dev libfreetype6-dev libpng-dev libtiff5-dev \
-              libjpeg-dev cmake pandoc
-
-            Rscript -e 'renv::install("posit-dev/r-shinylive")'
+              libjpeg-dev cmake libarchive-dev
 
         - name: Set up renv
           uses: r-lib/actions/setup-renv@v2
 
-        - name: Publish to GitHub Pages (and render)
-          uses: quarto-dev/quarto-actions/publish@v2
+        - name: Set up Quarto
+          uses: quarto-dev/quarto-actions/setup@v2
+
+        # Render the Quarto file
+        - name: "Render working directory"
+          uses: quarto-dev/quarto-actions/render@v2
+
+        # Upload a tar file that will work with GitHub Pages
+        # Make sure to set a retention day to avoid running into a cap
+        # This artifact shouldn't be required after deployment onto pages was a success.
+        - name: Upload Pages artifact
+          uses: actions/upload-pages-artifact@v3
           with:
-            target: gh-pages # renderred html files will be pushed here
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # this secret is always available
+            retention-days: 1
+
+        # Use an Action deploy to push the artifact onto GitHub Pages
+        # This requires the `Action` tab being structured to allow for deployment
+        # instead of using `docs/` or the `gh-pages` branch of the repository
+        - name: Deploy to GitHub Pages
+          id: deployment
+          uses: actions/deploy-pages@v4
