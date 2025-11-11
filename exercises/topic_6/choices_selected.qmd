@@ -20,8 +20,6 @@ library(pharmaverseadam)
 # Basic choices_selected example
 ADSL <- pharmaverseadam::adsl
 choices_selected(variable_choices(ADSL), "SEX")
-
-print(basic_choices)
 ```
 
 ### `teal` example with clinical module
@@ -29,7 +27,6 @@ print(basic_choices)
 Let's start with a basic teal application that uses `choices_selected`:
 
 ```{r}
-#| eval: false
 library(teal.modules.clinical)
 
 # Create sample data
@@ -68,7 +65,7 @@ app <- init(
   )
 )
 
-runApp(app)
+if (interactive()) runApp(app)
 ```
 
 ## Using `variable_choices`
@@ -200,7 +197,7 @@ app <- init(
     )
   )
 )
-runApp(app)
+if (interactive()) runApp(app)
 ```
 
 ## Exercise
