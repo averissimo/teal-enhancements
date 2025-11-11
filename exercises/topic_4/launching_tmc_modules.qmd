@@ -8,7 +8,7 @@ The `teal.modules.clinical` (TMC) package offers specialized modules designed sp
 
 Here's a simple example using a `teal.modules.clinical` module:
 
-```{r}
+```{.r}
 library(teal)
 library(teal.modules.clinical)
 library(teal.data)

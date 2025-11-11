@@ -43,19 +43,19 @@ This interactive experience promises to foster learning and collaboration while 
 - Code Sample: Demonstration of a simple teal app
 - Anatomy of a teal App: Key components & structure
 
-#### _Topic 2:_ Mastering teal for Pharma Data Analysis _(hands-on 40 minutes)_
+### _Topic 2:_ Mastering teal for Pharma Data Analysis _(hands-on 40 minutes)_
 
 - Introduction to teal.modules.clinical and anatomy of a module (15 minutes)
 - Deeper dive into how to provide and pre-process data in teal.modules.clinical (15 minutes)
 - Deeper dive into customizing the parameters of teal.modules.clinical modules (10 minutes)
 
-#### _Topic 3:_ Creating custom teal modules _(20 minutes)_
+### _Topic 3:_ Creating custom teal modules _(20 minutes)_
 
 - Step-by-step Development: Building your own teal modules
 - Best Practices: Tips for effective customization
 - Data Integration: Incorporating custom data processing inside modules
 
-#### _Topic 4:_ teal roadmap & Discussion _(15 minutes)_
+### _Topic 4:_ teal roadmap & Discussion _(15 minutes)_
 
 - Future Directions: Upcoming features and plans for teal
 - Discussion & Q&A: Open floor for questions, insights, and sharing experiences

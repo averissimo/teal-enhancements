@@ -9,7 +9,7 @@ The `data` argument in `teal::init()` is where you specify all the datasets your
 
 ## Option 1: Using `teal_data()`
 
-```{r}
+```{r, messages=FALSE}
 library(teal.data)
 
 # Create a basic teal_data object

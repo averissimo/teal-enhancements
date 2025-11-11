@@ -1,4 +1,6 @@
-## Topic 6: Introduction to `choices_selected` from `teal.transform`
+{{< include ../../_extensions/r-wasm/live/_knitr.qmd >}}
+
+## Topic 6: Deeper dive into customizing the parameters of `teal.modules.clinical` modules (10 minutes)
 
 The `choices_selected` function from `teal.transform` is a powerful utility for managing variable selections in teal modules.
 It provides a flexible way to specify choices and default selections for inputs, with support for both eager and delayed evaluation.
@@ -8,25 +10,44 @@ This topic will cover common scenarios app developers face when building teal ap
 - Providing choices without knowing the dataset structure upfront
 - Adapting to different datasets dynamically
 
-## Introduction to `choices_selected`
+## Introduction to `choices_selected` and `value_choices`
 
 ### Basic Usage
 
-The `choices_selected` function creates an object that specifies both available choices and selected defaults for UI inputs.
+> The `choices_selected` function creates an object that specifies both available choices and selected defaults for UI inputs.
 
-```{r}
+The choices can be provided in two ways:
+
+- Statically as character vectors
+- Dynamically by referencing the dataset _(when using within a teal application that does not yet know the full data structure)_.
+
+```{webr message=FALSE, warning=FALSE}
 library(teal.transform)
+
+choices_selected(c("ARM", "ARMCD"), "ARM")
+
+choices_selected("ADSL", c("ARM", "ARMCD"), "ARM")
+```
+
+> The `value_choices` function retrieves the actual choices from a dataset based on variable names.
+
+- Requires a dataset to extract the values from specified columns
+  - Dataset can be provided directly or as a reference to be resolved later
+- When multiple columns are provided: it combines unique values from all specified columns
+
+```{webr}
 library(pharmaverseadam)
 # Basic choices_selected example
 ADSL <- pharmaverseadam::adsl
-choices_selected(variable_choices(ADSL), "SEX")
+
+value_choices(ADSL, c("ARMCD"), c("ARM"))
 ```
 
 ### `teal` example with clinical module
 
 Let's start with a basic teal application that uses `choices_selected`:
 
-```{r}
+```{.r}
 library(teal.modules.clinical)
 
 # Create sample data
@@ -57,7 +78,7 @@ app <- init(
       arm_var = choices_selected(c("ARM", "ARMCD"), "ARM"),
       add_total = TRUE,
       summarize_vars = choices_selected(
-        c("SEX", "RACE", "BMRKR2", "EOSDY", "DCSREAS", "AGE"),
+        c("SEX", "RACE", "AGE"),
         selected = c("SEX", "RACE", "AGE")
       ),
       useNA = "ifany"
@@ -65,15 +86,18 @@ app <- init(
   )
 )
 
-if (interactive()) runApp(app)
+runApp(app)
 ```
 
 ## Using `variable_choices`
 
 - `variable_choices` function allows you to dynamically select variables based on dataset characteristics.
 
-```{r}
-ADSL <- data[["ADSL"]]
+```{webr}
+ADSL$ARM <- as.factor(ADSL$ARM)
+ADSL$ARMCD <- as.factor(ADSL$ARMCD)
+ADSL$SEX <- as.factor(ADSL$SEX)
+ADSL$RACE <- as.factor(ADSL$RACE)
 
 factor_vars <- variable_choices(ADSL, subset = function(data) {
   idx <- vapply(data, is.factor, logical(1))
@@ -98,7 +122,7 @@ The `variable_choices` function can be used in two modes:
 - Eager evaluation computes choices immediately, allowing for inspecting the choices beforehand _(just as shown above)_.
 - Delayed evaluation allows choices to be determined at runtime, which is useful when dataset structure isn't known beforehand _(see example below)_.
 
-```{r}
+```{webr}
 factor_vars <- variable_choices("ADSL", subset = function(data) {
   colnames(data)[is.factor(data)]
 })
@@ -116,9 +140,7 @@ print(analysis_vars)
 
 #### Application with Dynamic Variable Selection
 
-```{r}
-#| eval: false
-
+```{.r}
 # Application that automatically finds numeric variables
 app_dynamic <- init(
   data = data,
@@ -141,64 +163,20 @@ runApp(app_dynamic)
 
 Using Kaplan-Meier module from `teal.modules.clinical`
 
-```{r}
-data_km <- teal_data()
-data_km <- within(data, {
-  ADSL <- pharmaverseadam::adsl
-
-  ADSL$ARM <- as.factor(ADSL$ARM)
-  ADSL$ARMCD <- as.factor(ADSL$ARMCD)
-  ADSL$SEX <- as.factor(ADSL$SEX)
-  ADSL$RACE <- as.factor(ADSL$RACE)
-
-  ADTTE <- pharmaverseadam::adtte_onco
-  ADTTE$ARM <- as.factor(ADTTE$ARM)
-  ADTTE$ARMCD <- as.factor(ADTTE$ARMCD)
-  ADTTE$AVALU = as.factor("DAYS")
-})
-join_keys(data_km) <- default_cdisc_join_keys[names(data_km)]
-
-arm_ref_comp <- list(
-  ACTARMCD = list(
-    ref = "Pbo",
-    comp = c("Xan_Hi", "Xan_Lo")
-  ),
-  ARM = list(
-    ref = "Placebo",
-    comp = c("Xanomeline High Dose", "Xanomeline Low Dose")
-  )
-)
-ADSL <- data_km[["ADSL"]]
-ADTTE <- data_km[["ADTTE"]]
-
-app <- init(
-  data = data_km,
-  modules = modules(
-    tm_g_km(
-      label = "Kaplan-Meier Plot",
-      dataname = "ADTTE",
-      arm_var = choices_selected(
-        variable_choices("ADSL", c("ARM", "ARMCD", "ACTARMCD")),
-        "ARM"
-      ),
-      paramcd = choices_selected(
-        value_choices("ADTTE", "PARAMCD", "PARAM"),
-        "OS"
-      ),
-      arm_ref_comp = arm_ref_comp,
-      strata_var = choices_selected(
-        variable_choices("ADSL", c("SEX", "RACE")),
-        "RACE"
-      ),
-      facet_var = choices_selected(
-        variable_choices(ADSL, c("SEX", "RACE")),
-        NULL
-      )
-    )
-  )
-)
-if (interactive()) runApp(app)
+```{.r}
+{{< include support_km.R >}}
 ```
+
+::: {.callout-tip collapse="true"}
+### Example App
+
+```{.shinylive-r}
+#| standalone: true
+#| viewerHeight: 680
+{{< include support_km.R >}}
+```
+:::
+
 
 ## Exercise
 
@@ -212,6 +190,14 @@ Fill in the code below to create a teal application that uses `choices_selected`
 ```{.r}
 {{< include exercise_6.R >}}
 ```
+
+::: {.callout-tip collapse="true"}
+### Answer
+
+```{.r}
+{{< include solution_exercise_6.R >}}
+```
+:::
 
 ## Summary
 

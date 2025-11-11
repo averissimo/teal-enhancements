@@ -1,28 +1,11 @@
 ---
-engine: knitr
-format:
-  live-html:
-    toc: true
-  # live-revealjs:
-  #   smaller: true
-  #   scrollable: true
-  #   include-in-header:
-  #     text: |
-  #       <style>
-  #       .reveal .slides section.fs-50 { font-size: .5em; }
-  #       .reveal .slides section.fs-60 { font-size: .6em; }
-  #       </style>
-#webr:
-#  packages:
-#    #- teal
-#    - dplyr
-#    - tidyr
-#    - ggplot2
 filters:
   - shinylive
 ---
 
-## How to create a teal module?
+{{< include ../../_extensions/r-wasm/live/_knitr.qmd >}}
+
+## Topic 7: Creating custom `teal` modules (20 minutes)
 
 A teal module consists of two main components, similar to a Shiny module:
 
@@ -89,7 +72,7 @@ Let's create a custom module that shows a **simple histogram plot** based on use
 
 ## App running
 
-```{shinylive-r}
+```{.shinylive-r}
 #| standalone: true
 #| viewerHeight: 680
 {{< include app.R >}}

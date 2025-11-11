@@ -4,7 +4,7 @@ You should have all the packages already preinstalled during these workshops on
 the remote workbenches we have prepared.
 
 When you are starting from scratch (or just reinstalled your R version):
-```{R}
+```{.r}
 install.packages(c(
     "teal",
     "teal.modules.clinical",

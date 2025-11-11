@@ -8,8 +8,52 @@ project:
 
 website:
   title: "Interactive Data Visualisation Using the Teal Framework"
-  navbar:
-    left:
+  page-navigation: true
+  sidebar:
+    style: "docked"
+    search: true
+    tools:
+      - icon: github
+        href: https://github.com/phuse-org/teal-enhancements
+    contents:
       - href: index.qmd
         text: Home
+      # - section: Basics
+      #   contents:
+      #     - href: exercises/topic_1/foreward.qmd
+      #     - exercises/topic_2/how_to_install.qmd
+      #     - text: Launching a simple `teal` application
+      #       href: exercises/topic_3/basic_app.qmd
+      # - section: teal.modules.clinical
+      #   contents:
+      #     - text: Introduction to `teal.modules.clinical` and anatomy of a module
+      #       href: exercises/topic_4/launching_tmc_modules.qmd
+      #     - text: Deeper dive into how to provide and pre-process data
+      #       href: exercises/topic_5/data_in_teal.qmd
+      #     - text: Deeper dive into customizing the parameters
+      #       href: exercises/topic_6/choices_selected.qmd
+      # - text: Creating custom `teal` modules
+      #   href: exercises/topic_7/create_teal_module.qmd
 
+format:
+  live-html:
+    theme:
+      - cosmo
+      - brand
+    toc: true
+    code-line-numbers: true
+    code-link: true
+    css: style.css
+
+webr:
+  packages:
+    - teal.data
+    - teal.transform
+    - pharmaverseadam
+    - tidyr
+    - ggplot2
+
+engine: knitr
+
+filters:
+  - shinylive

@@ -1,2 +1,5 @@
 /.quarto/
 .Rproj.user
+.quarto/
+.Rhistory
+/README_files/

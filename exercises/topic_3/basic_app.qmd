@@ -1,3 +1,5 @@
+{{< include ../../_extensions/r-wasm/live/_knitr.qmd >}}
+
 ## Topic 3: Launching a simple `teal` application (7 minutes)
 
 ## Launching a simple `teal` application
@@ -15,12 +17,12 @@ Every `teal` application follows this fundamental pattern:
 
 - Initialization using `teal::init()`
 - Data specification (must be specified)
-- Modules definition 
+- Modules definition
 - Application launch using the usual Shiny API
 
 ## Code example: Simplest `teal` application
 
-```{R}
+```{.r}
 library(teal)
 
 # Create the simplest possible teal application
@@ -35,9 +37,7 @@ app <- teal::init(
 )
 
 # Launch the application
-if (interactive()) {
-  shiny::shinyApp(app$ui, app$server)
-} 
+shiny::shinyApp(app$ui, app$server)
 ```
 
 ### What this demonstrates
@@ -58,7 +58,7 @@ The `data` argument is where you specify all the datasets your application will 
 
 ### Option 1: Using `teal_data()`
 
-```{webr}
+```{web-r}
 # Create data using teal_data()
 my_data <- teal_data(
   ADSL = adsl_data,
@@ -74,7 +74,7 @@ app <- init(
 
 ### Option 2: Using `cdisc_data()` for clinical data
 
-```{webr}
+```{web-r}
 # For CDISC/ADaM data with relationships
 my_data <- cdisc_data(
   ADSL = adsl_data,
@@ -119,7 +119,7 @@ app <- teal::init(
 # Launch the application
 if (interactive()) {
   shiny::shinyApp(app$ui, app$server)
-} 
+}
 ```
 
 ## Multiple modules example
@@ -161,5 +161,5 @@ app <- teal::init(
 # Launch the application
 if (interactive()) {
   shiny::shinyApp(app$ui, app$server)
-} 
+}
 ```

@@ -1,2 +1,7 @@
+---
+format:
+  live-html:
+    toc: false
+---
 
 {{< include README.md >}}
