@@ -40,6 +40,7 @@ jobs:
               any::pharmaverseadam
               any::dplyr
               any::ggplot2
+              any::yaml
 
         - name: Install system dependencies
           run: |
