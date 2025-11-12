@@ -6641,11 +6641,6 @@
       "Maintainer": "Dean Attali <daattali@gmail.com>",
       "Repository": "CRAN"
     },
-    "shinylive": {
-      "Package": "shinylive",
-      "Version": "0.3.0",
-      "Source": "Repository"
-    },
     "shinyvalidate": {
       "Package": "shinyvalidate",
       "Version": "0.1.3",
