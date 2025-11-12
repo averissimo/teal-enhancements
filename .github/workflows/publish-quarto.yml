@@ -35,6 +35,8 @@ jobs:
               any::rmarkdown
               any::downlit
               any::xml2
+              any::teal.modules.clinical
+              any::pharmaverseadam
 
         - name: Install system dependencies
           run: |
