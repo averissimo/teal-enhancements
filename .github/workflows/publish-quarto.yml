@@ -36,7 +36,10 @@ jobs:
               any::downlit
               any::xml2
               any::teal.modules.clinical
+              any::teal.modules.general
               any::pharmaverseadam
+              any::dplyr
+              any::ggplot2
 
         - name: Install system dependencies
           run: |
