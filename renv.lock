@@ -4579,16 +4579,11 @@
       "Language": "en-US",
       "LazyData": "true",
       "NeedsCompilation": "yes",
-      "Roxygen": "list(markdown = TRUE)",
       "RoxygenNote": "7.3.2",
       "Collate": "'between-within.R' 'catch-routine-registration.R' 'component.R' 'cov_struct.R' 'data.R' 'empirical.R' 'fit.R' 'kenwardroger.R' 'mmrm-methods.R' 'mmrm-package.R' 'utils.R' 'residual.R' 'utils-nse.R' 'utils-formula.R' 'satterthwaite.R' 'skipping.R' 'tidiers.R' 'testing.R' 'tmb-methods.R' 'tmb.R' 'interop-emmeans.R' 'interop-parsnip.R' 'interop-car.R' 'zzz.R'",
-      "Config/pak/sysreqs": "make libicu-dev",
-      "Repository": "https://pharmaverse.r-universe.dev",
-      "RemoteUrl": "https://github.com/openpharma/mmrm",
-      "RemoteRef": "HEAD",
-      "RemoteSha": "8350c1551fab9c15ba15dd03ae32eb92e970a5fc",
       "Author": "Daniel Sabanes Bove [aut, cre] (ORCID: <https://orcid.org/0000-0002-0176-9239>), Liming Li [aut] (ORCID: <https://orcid.org/0009-0008-6870-0878>), Julia Dedic [aut], Doug Kelkhoff [aut], Kevin Kunzmann [aut], Brian Matthew Lang [aut], Christian Stock [aut], Ya Wang [aut], Craig Gower-Page [ctb], Dan James [aut], Jonathan Sidi [aut], Daniel Leibovitz [aut], Daniel D. Sjoberg [aut] (ORCID: <https://orcid.org/0000-0003-0862-2018>), Nikolas Ivan Krieger [aut] (ORCID: <https://orcid.org/0000-0002-4581-3545>), Lukas A. Widmer [ctb] (ORCID: <https://orcid.org/0000-0003-1471-3493>), Boehringer Ingelheim Ltd. [cph, fnd], Gilead Sciences, Inc. [cph, fnd], F. Hoffmann-La Roche AG [cph, fnd], Merck Sharp & Dohme, Inc. [cph, fnd], AstraZeneca plc [cph, fnd], inferential.biostatistics GmbH [cph, fnd]",
-      "Maintainer": "Daniel Sabanes Bove <daniel.sabanes_bove@rconis.com>"
+      "Maintainer": "Daniel Sabanes Bove <daniel.sabanes_bove@rconis.com>",
+      "Repository": "CRAN"
     },
     "modelr": {
       "Package": "modelr",
@@ -6645,6 +6640,11 @@
       "Author": "Dean Attali [aut, cre] (<https://orcid.org/0000-0002-5645-3493>)",
       "Maintainer": "Dean Attali <daattali@gmail.com>",
       "Repository": "CRAN"
+    },
+    "shinylive": {
+      "Package": "shinylive",
+      "Version": "0.3.0",
+      "Source": "Repository"
     },
     "shinyvalidate": {
       "Package": "shinyvalidate",
