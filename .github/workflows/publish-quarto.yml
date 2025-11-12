@@ -44,8 +44,8 @@ jobs:
               libjpeg-dev cmake libarchive-dev
             Rscript -e "pak::pak('posit-dev/r-shinylive')"
 
-        - name: Set up renv
-          uses: r-lib/actions/setup-renv@v2
+        # - name: Set up renv
+        #   uses: r-lib/actions/setup-renv@v2
 
         - name: Set up Quarto
           uses: quarto-dev/quarto-actions/setup@v2
