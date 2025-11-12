@@ -1,7 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://averissimo.github.io/teal-enhancements/README.html</loc>
+    <lastmod>2025-11-12T02:16:53.306Z</lastmod>
+  </url>
+  <url>
     <loc>https://averissimo.github.io/teal-enhancements/index.html</loc>
-    <lastmod>2025-09-18T09:01:04.163Z</lastmod>
+    <lastmod>2025-11-12T02:16:53.332Z</lastmod>
+  </url>
+  <url>
+    <loc>https://averissimo.github.io/teal-enhancements/exercises/topic_6/choices_selected.html</loc>
+    <lastmod>2025-11-12T02:16:53.329Z</lastmod>
+  </url>
+  <url>
+    <loc>https://averissimo.github.io/teal-enhancements/exercises/topic_4/launching_tmc_modules.html</loc>
+    <lastmod>2025-11-12T02:16:53.328Z</lastmod>
+  </url>
+  <url>
+    <loc>https://averissimo.github.io/teal-enhancements/exercises/topic_2/how_to_install.html</loc>
+    <lastmod>2025-11-12T02:16:53.327Z</lastmod>
+  </url>
+  <url>
+    <loc>https://averissimo.github.io/teal-enhancements/exercises/topic_1/foreward.html</loc>
+    <lastmod>2025-11-12T02:16:53.326Z</lastmod>
+  </url>
+  <url>
+    <loc>https://averissimo.github.io/teal-enhancements/exercises/topic_3/basic_app.html</loc>
+    <lastmod>2025-11-12T02:16:53.327Z</lastmod>
+  </url>
+  <url>
+    <loc>https://averissimo.github.io/teal-enhancements/exercises/topic_5/data_in_teal.html</loc>
+    <lastmod>2025-11-12T02:16:53.328Z</lastmod>
+  </url>
+  <url>
+    <loc>https://averissimo.github.io/teal-enhancements/exercises/topic_7/create_teal_module.html</loc>
+    <lastmod>2025-11-12T02:16:53.331Z</lastmod>
+  </url>
+  <url>
+    <loc>https://averissimo.github.io/teal-enhancements/presentation.html</loc>
+    <lastmod>2025-11-12T02:16:53.333Z</lastmod>
   </url>
 </urlset>
