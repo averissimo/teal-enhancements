@@ -5,12 +5,9 @@ library(ggplot2)
 my_custom_module_ui <- function(id) {
   ns <- NS(id)
   tags$div(
+    # Exercise 7.2: Add reporter UI for binwidth ------------------------------
     teal.reporter::simple_reporter_ui(ns("reporter")),
-    selectInput(
-      inputId = ns("dataset"),
-      label = "Select dataset",
-      choices = NULL
-    ),
+    # -------------------------------------------------------------------------
     selectInput( # variable selector
       inputId = ns("variable"),
       label = "Select variable",
@@ -27,49 +24,43 @@ my_custom_module_ui <- function(id) {
     plotOutput(ns("plot")) # Output for the plot
   )
 }
-
+# Exercise 7.2: Add slider UI for binwidth ------------------------------------
+#  - Update server arguments with reporter and filter_panel_api
+#  - check if filter_panel_api is provided
 my_custom_module_srv <- function(id, data, reporter, filter_panel_api) {
   moduleServer(id, function(input, output, session) {
     with_filter <- !rlang::is_missing(filter_panel_api) && inherits(filter_panel_api, "FilterPanelApi")
-
-    updateSelectInput(
-      inputId = "dataset",
-      choices = names(data())
+# -----------------------------------------------------------------------------
+    updateSelectInput( # update variable selector by names of data
+      inputId = "variable",
+      choices = data()[["ADSL"]] |> select(where(is.numeric)) |> names()
     )
 
-    observeEvent(
-      input$dataset,
-      {
-        req(input$dataset)
-        updateSelectInput(
-          inputId = "variable",
-          choices = data()[[input$dataset]] |> select(where(is.numeric)) |> names()
-        )
-      }
-    )
-
-    # Update reactive and render function
+    # add plot call to qenv
     result <- reactive({
-      req(input$dataset)
       req(input$variable)
+      req(input$binwidth)
       within(
         data(),
         {
-          plot <- ggplot(input_dataset, aes(x = input_var)) +
-            geom_histogram()
+          plot <- ggplot(ADSL, aes(x = input_var)) +
+            geom_histogram(binwidth = input_binwidth)
           plot
         },
-        input_dataset = as.name(input$dataset),
-        input_var = as.name(input$variable)
+        input_var = as.name(input$variable), # Pass the selected variable as a symbol
+        input_binwidth = input$binwidth
       )
     })
 
     # render to output the object from qenv
     output$plot <- renderPlot(result()[["plot"]])
 
+    # Exercise 7.2: Add report generation -------------------------------------
+    #  - Create `card_fun` function that is used to add card to reporter
+    #  - Call `simple_reporter_srv`
     card_fun <- function(card = teal.reporter::ReportCard$new(), comment) {
       card$set_name("My custom module")
-      card$append_text(filter_panel_api$get_filter_state(), "verbatim")
+      if (with_filter) card$append_text(filter_panel_api$get_filter_state(), "verbatim")
       card$append_text(paste("Selected var:", input$variable))
       card$append_text(paste("Selected binwidth:", input$binwidth))
       card$append_plot(result()$plot)
@@ -79,6 +70,7 @@ my_custom_module_srv <- function(id, data, reporter, filter_panel_api) {
       reporter = reporter,
       card_fun = card_fun
     )
+    # -------------------------------------------------------------------------
 
     result
   })
@@ -93,7 +85,6 @@ my_custom_module <- module(
 data <- teal_data()
 data <- within(data, {
   ADSL <- pharmaverseadam::adsl
-  ADAE <- pharmaverseadam::adae
 })
 
 app <- init(
