@@ -6,6 +6,9 @@ my_custom_module_ui <- function(id) {
   ns <- NS(id)
   tags$div(
     teal.reporter::simple_reporter_ui(ns("reporter")),
+    # Exercise 7.3: Add dataset selector --------------------------------------
+
+    # -------------------------------------------------------------------------
     selectInput( # variable selector
       inputId = ns("variable"),
       label = "Select variable",
@@ -27,12 +30,17 @@ my_custom_module_srv <- function(id, data, reporter, filter_panel_api) {
   moduleServer(id, function(input, output, session) {
     with_filter <- !rlang::is_missing(filter_panel_api) && inherits(filter_panel_api, "FilterPanelApi")
 
+    # Exercise 7.3: Add dataset selector ----------------------------------------
+    #  - Update dataset selector choices
+    #  - Update variable selector choices based on selected dataset
+
     updateSelectInput( # update variable selector by names of data
       inputId = "variable",
       choices = data()[["ADSL"]] |> select(where(is.numeric)) |> names()
     )
 
-    # add plot call to qenv
+    # Exercise 7.3: Add dataset selector --------------------------------------
+    #  - Update reactive function
     result <- reactive({
       req(input$variable)
       req(input$binwidth)
@@ -47,6 +55,9 @@ my_custom_module_srv <- function(id, data, reporter, filter_panel_api) {
         input_binwidth = input$binwidth
       )
     })
+
+    # -------------------------------------------------------------------------
+
 
     # render to output the object from qenv
     output$plot <- renderPlot(result()[["plot"]])
@@ -77,6 +88,7 @@ my_custom_module <- module(
 data <- teal_data()
 data <- within(data, {
   ADSL <- pharmaverseadam::adsl
+  ADAE <- pharmaverseadam::adae
 })
 
 app <- init(
