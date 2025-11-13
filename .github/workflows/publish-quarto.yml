@@ -14,9 +14,6 @@ jobs:
         pages: write
         id-token: write
       steps:
-        - name: Check out repository
-          uses: actions/checkout@v3
-
         # To render using knitr, we need a few more setup steps...
         # If we didn't want the examples to use `engine: knitr`, we could
         # skip a few of the setup steps.
@@ -42,16 +39,14 @@ jobs:
               any::ggplot2
               any::yaml
 
-        - name: Install system dependencies
-          run: |
-            sudo apt-get update
-            sudo apt-get install -y libcurl4-openssl-dev libssl-dev libxml2-dev libfontconfig1-dev \
-              libcairo2-dev libharfbuzz-dev libfribidi-dev libfreetype6-dev libpng-dev libtiff5-dev \
-              libjpeg-dev cmake libarchive-dev
-            Rscript -e "pak::pak('posit-dev/r-shinylive')"
+        # Delayed checkout to ensure shinylive is installed globally
+        - name: Check out repository
+          uses: actions/checkout@v4
 
-        # - name: Set up renv
-        #   uses: r-lib/actions/setup-renv@v2
+        # Workaround to avoid renv issues
+        - name: remove renv files
+          run: |
+            rm -rf renv.lock renv/ .Rprofile
 
         - name: Set up Quarto
           uses: quarto-dev/quarto-actions/setup@v2
@@ -67,6 +62,7 @@ jobs:
           uses: actions/upload-pages-artifact@v3
           with:
             retention-days: 1
+            path: docs/
 
         # Use an Action deploy to push the artifact onto GitHub Pages
         # This requires the `Action` tab being structured to allow for deployment
